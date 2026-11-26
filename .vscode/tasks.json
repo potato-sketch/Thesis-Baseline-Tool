@@ -6,30 +6,45 @@
       "label": "Spell checker: open app",
       "type": "shell",
       "command": "python -m spellchecker gui",
+      "osx": { "command": "python3 -m spellchecker gui" },
+      "linux": { "command": "python3 -m spellchecker gui" },
+      "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
       "label": "Spell checker: train model",
       "type": "shell",
       "command": "python -m spellchecker train",
+      "osx": { "command": "python3 -m spellchecker train" },
+      "linux": { "command": "python3 -m spellchecker train" },
+      "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
       "label": "Spell checker: evaluate",
       "type": "shell",
       "command": "python -m spellchecker evaluate --report results/evaluation.md",
+      "osx": { "command": "python3 -m spellchecker evaluate --report results/evaluation.md" },
+      "linux": { "command": "python3 -m spellchecker evaluate --report results/evaluation.md" },
+      "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
       "label": "Spell checker: tune threshold",
       "type": "shell",
       "command": "python -m spellchecker tune",
+      "osx": { "command": "python3 -m spellchecker tune" },
+      "linux": { "command": "python3 -m spellchecker tune" },
+      "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
       "label": "Spell checker: unit tests",
       "type": "shell",
       "command": "python -m unittest discover -s tests -t . -v",
+      "osx": { "command": "python3 -m unittest discover -s tests -t . -v" },
+      "linux": { "command": "python3 -m unittest discover -s tests -t . -v" },
+      "options": { "cwd": "${workspaceFolder}" },
       "group": { "kind": "test", "isDefault": true },
       "problemMatcher": []
     }

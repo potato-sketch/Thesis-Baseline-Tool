@@ -41,6 +41,18 @@ python -m spellchecker phonetic aksion aksiyon aksyon
 python -m unittest discover -s tests -t .
 ```
 
+On **macOS / Linux**, go to the project folder first and type `python3` instead of `python`
+(VS Code's integrated terminal already opens in the project folder):
+
+```bash
+cd ~/Documents/GitHub/Thesis-Baseline-Tool   # wherever you cloned it
+python3 -m spellchecker gui
+python3 -m spellchecker check "Hindi parin siya pumasok dahil mganda ang panahon."
+python3 -m unittest discover -s tests -t .
+```
+
+The **Terminal → Run Task…** entries pick `python3` automatically on a Mac.
+
 ## How the paper maps to the code (Fig. 1)
 
 | Paper | File | Notes |
