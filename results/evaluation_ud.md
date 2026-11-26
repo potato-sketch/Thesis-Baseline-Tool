@@ -5,12 +5,12 @@
 | Metric | Test sentences | + held-out clean sentences | Paper |
 |---|---|---|---|
 | Recall | 100.00% | 100.00% | 81% |
-| Precision | 34.72% | 20.58% | 53.64% |
-| F-measure | 51.55% | 34.13% | 64.53% |
+| Precision | 34.60% | 20.53% | 53.64% |
+| F-measure | 51.41% | 34.07% | 64.53% |
 | Suggestion adequacy | 31.00% | 31.00% | 87.78% |
-| Correct word ranked first | 30.00% | 30.00% | not reported |
+| Correct word ranked first | 27.00% | 27.00% | not reported |
 
-TP = 100, FN = 0, FP = 188 in the test sentences, plus 198 false alarm(s) in 40 clean sentences (478 words).
+TP = 100, FN = 0, FP = 189 in the test sentences, plus 198 false alarm(s) in 40 clean sentences (478 words).
 
 ## Results per error type (Table I categories)
 
@@ -127,6 +127,7 @@ TP = 100, FN = 0, FP = 188 in the test sentences, plus 198 false alarm(s) in 40 
 | bumili | n-gram: rare trigram(s) bil, li_ in stem 'bili' | 55 |
 | gulay | n-gram: rare trigram(s) _gu, gul, lay in stem 'gulay' | 55 |
 | kanyang | n-gram: rare trigram(s) _ny, nya in stem 'nyang' | 56 |
+| mabait | english-hyphen: the English word "bait" takes a hyphen after a Tagalog prefix: ma-bait | 56 |
 | matulungin | n-gram: rare trigram(s) tul, ulu, lun in stem 'tulung' | 56 |
 | langit | n-gram: rare trigram(s) ngi, git in stem 'langit' | 57 |
 | hapon | n-gram: rare trigram(s) hap, apo, pon in stem 'hapon' | 57 |

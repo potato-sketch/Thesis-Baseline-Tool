@@ -94,7 +94,7 @@ over the test sentences plus the held-out clean sentences:
 | **both** (seed + UD Ugnayan), default | 97.00% | 64.67% | 77.60% | 98.97% | 89.69% |
 | both, paper-only pipeline | 87.00% | 64.44% | 74.04% | 91.95% | 81.61% |
 | seed only | 97.00% | 63.40% | 76.68% | 98.97% | 89.69% |
-| UD Ugnayan only | 100.00% | 20.58% | 34.13% | 31.00% | |
+| UD Ugnayan only | 100.00% | 20.53% | 34.07% | 31.00% | |
 | *Paper (Octaviano & Borra, 2017)* | *81%* | *53.64%* | *64.53%* | *87.78%* | |
 
 Full tables (per error type, false negatives, false alarms, failed suggestions) are in
@@ -233,11 +233,15 @@ treebanks in `data/ud/`, and retrain.
    *nagtetext* is flagged (`english-hyphen`) and corrected to *nag-reply*, *i-post*,
    *nagte-text*. The merge test does the same for a prefix written apart: *nag binge* →
    *nag-binge* instead of *nagbinge*. A root counts as English when it is in the English
-   word list and not in the Tagalog one. For the merge test, a word in neither list also
-   counts when its trigrams are rare in Tagalog (*binge*). A word with a Tagalog analysis
-   is never hyphenated, and neither are the assimilated nasal prefixes *pan-, man-, pam-*
-   (so *manpower* is not *man-power*). Infixed forms (*tinry, chineck*) are left as they
-   are. The paper accepts both *magtext* and *nag-text*; in paper-only mode *magtext* is
+   word list and not in the Tagalog one. In the merge test, a word in neither list gets
+   both spellings, the hyphenated one first when its trigrams are rare in Tagalog
+   (*nag binge* → *nag-binge, nagbinge*). A word with a Tagalog analysis is never
+   hyphenated, and neither are the assimilated nasal prefixes *pan-, man-, pam-* (so
+   *manpower* is not *man-power*). A reduplicated syllable must copy the root's first
+   letters (*nagte-text*, not *maa-gang*). Infixed forms (*tinry, chineck*) are left as
+   they are. The rule needs a good Tagalog word list: with UD Ugnayan alone, *mabait* is
+   missing and is read as *ma-* + English *bait*. The paper accepts both *magtext* and
+   *nag-text*; in paper-only mode *magtext* is
    still accepted and *nag binge* still merges to *nagbinge*.
 
 With the extensions off, every step the paper describes runs exactly as written. Only the
