@@ -4,13 +4,13 @@
 
 | Metric | Test sentences | + held-out clean sentences | Paper |
 |---|---|---|---|
-| Recall | 97.00% | 97.00% | 81% |
-| Precision | 33.45% | 19.68% | 53.64% |
-| F-measure | 49.74% | 32.72% | 64.53% |
-| Suggestion adequacy | 28.87% | 28.87% | 87.78% |
-| Correct word ranked first | 27.84% | 27.84% | not reported |
+| Recall | 95.00% | 95.00% | 81% |
+| Precision | 33.22% | 19.63% | 53.64% |
+| F-measure | 49.22% | 32.53% | 64.53% |
+| Suggestion adequacy | 26.32% | 26.32% | 87.78% |
+| Correct word ranked first | 25.26% | 25.26% | not reported |
 
-TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 clean sentences (478 words).
+TP = 95, FN = 5, FP = 191 in the test sentences, plus 198 false alarm(s) in 40 clean sentences (478 words).
 
 ## Results per error type (Table I categories)
 
@@ -18,18 +18,20 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 |---|---|---|---|
 | insertion | 8 | 8 | 1 |
 | deletion | 28 | 28 | 6 |
-| substitution | 37 | 37 | 8 |
-| space deletion | 9 | 6 | 5 |
-| hyphen insertion | 12 | 12 | 2 |
+| substitution | 37 | 36 | 8 |
+| space deletion | 9 | 5 | 4 |
+| hyphen insertion | 12 | 12 | 0 |
 | space insertion | 6 | 6 | 6 |
 
 ## False negatives (errors that were not flagged)
 
 | Incorrect | Correct | Accepted by |
 |---|---|---|
+| napakainot | napakainit | stemmed-dictionary (stem: not) |
 | kana | ka na | n-gram (all trigrams of 'kana' are frequent) |
 | palang | pa lang | n-gram (all trigrams of 'lang' are frequent) |
 | nalang | na lang | n-gram (all trigrams of 'lang' are frequent) |
+| nanaman | na naman | stemmed-dictionary (stem: man) |
 
 ## False positives in the test sentences
 
@@ -38,7 +40,6 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | paaralan | n-gram: rare trigram(s) _ar, ral in stem 'aral' | 9 |
 | aming | n-gram: rare trigram(s) _am in stem 'aming' | 10 |
 | simbahan | n-gram: rare trigram(s) sim, imb, mba in stem 'simba' | 10 |
-| Masayang | n-gram: rare trigram(s) say in stem 'sayang' | 11 |
 | bakuran | n-gram: rare trigram(s) bak, aku, kur, ur_ in stem 'bakur' | 11 |
 | Bumili | n-gram: rare trigram(s) bil, li_ in stem 'bili' | 12 |
 | umaga | n-gram: rare trigram(s) _ag in stem 'aga' | 12 |
@@ -102,7 +103,6 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | puno | n-gram: rare trigram(s) pun, uno, no_ in stem 'puno' | 37 |
 | Masarap | n-gram: rare trigram(s) sar, rap, ap_ in stem 'sarap' | 38 |
 | mangga | n-gram: rare trigram(s) man, ngg, gga in stem 'mangga' | 38 |
-| magandang | n-gram: rare trigram(s) and, dan in stem 'andang' | 39 |
 | bundok | n-gram: rare trigram(s) bun, und, ndo, dok, ok_ in stem 'bundok' | 39 |
 | ibon | n-gram: rare trigram(s) _bo, bon in stem 'bon' | 40 |
 | himpapawid | n-gram: rare trigram(s) _hi, him, imp, mpa, pap, paw, awi, wid, id_ in stem 'himpapawid' | 40 |
@@ -344,7 +344,6 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | sintomas | n-gram: rare trigram(s) sin, int, nto, tom, oma, mas in stem 'sintomas' | 22 |
 | dengue | n-gram: rare trigram(s) _de, den, eng, ngu, gue, ue_ in stem 'dengue' | 22 |
 | paano | n-gram: rare trigram(s) no_ in stem 'ano' | 22 |
-| maiiwasan | n-gram: rare trigram(s) _iw, iwa, was in stem 'iwas' | 22 |
 | Nagbukas | n-gram: rare trigram(s) buk, uka, kas in stem 'bukas' | 23 |
 | bagong | n-gram: rare trigram(s) bag, ago, gon in stem 'bagong' | 23 |
 | silid-aklatan | n-gram: rare trigram(s) sil, lid, id-, d-a, -ak, akl, kla, lat, ata, tan in stem 'silid-aklatan' | 23 |
@@ -361,7 +360,6 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | social | n-gram: rare trigram(s) _so, soc, oci, cia, ial in stem 'social' | 25 |
 | media | n-gram: rare trigram(s) _me, med, edi, dia, ia_ in stem 'media' | 25 |
 | Nagluluksa | n-gram: rare trigram(s) luk, uks, ksa in stem 'luksa' | 26 |
-| pagpanaw | n-gram: rare trigram(s) naw in stem 'naw' | 26 |
 | minamahal | n-gram: rare trigram(s) mah in stem 'mahal' | 26 |
 | alkalde | n-gram: rare trigram(s) alk, lka, ald, lde, de_ in stem 'alkalde' | 26 |
 | Sumikat | n-gram: rare trigram(s) sik, ika, kat in stem 'sikat' | 27 |
@@ -420,9 +418,7 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | ilantad | n-gram: rare trigram(s) ant, nta, tad, ad_ in stem 'lantad' | 37 |
 | pang-aabuso | n-gram: rare trigram(s) _ab, abu, bus, uso, so_ in stem 'abuso' | 37 |
 | prayle | n-gram: rare trigram(s) _pr, pra, ray, ayl, yle, le_ in stem 'prayle' | 37 |
-| Masayang | n-gram: rare trigram(s) say in stem 'sayang' | 38 |
 | nagkuwentuhan | n-gram: rare trigram(s) kuw, uwe, wen, ent, ntu, tu_ in stem 'kuwentu' | 38 |
-| magkakaibigan | n-gram: rare trigram(s) kai, aib, ibi in stem 'kaibig' | 38 |
 | habang | n-gram: rare trigram(s) hab in stem 'habang' | 38 |
 | umiinom | n-gram: rare trigram(s) ino, nom, om_ in stem 'inom' | 38 |
 | kape | n-gram: rare trigram(s) kap, ape, pe_ in stem 'kape' | 38 |
@@ -432,7 +428,6 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | agham | n-gram: rare trigram(s) _ag, agh, gha, ham, am_ in stem 'agham' | 39 |
 | pag-iipon | n-gram: rare trigram(s) _ip, ipo, pon in stem 'ipon' | 40 |
 | pera | n-gram: rare trigram(s) _pe, per, era in stem 'pera' | 40 |
-| mabuting | n-gram: rare trigram(s) but, uti, tin in stem 'buting' | 40 |
 | gawi | n-gram: rare trigram(s) gaw, awi, wi_ in stem 'gawi' | 40 |
 | simulan | n-gram: rare trigram(s) sim, imu, ul_ in stem 'simul' | 40 |
 | habang | n-gram: rare trigram(s) hab in stem 'habang' | 40 |
@@ -498,7 +493,6 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | pagsisulit | pagsusulit | (none) |
 | bayabi | bayani | bayad, katabi |
 | kapitbahat | kapitbahay | (none) |
-| napakainot | napakainit | (none) |
 | Kayapala | Kaya pala | (none) |
 | magka-ugnay | magkaugnay | (none) |
 | pag-kain | pagkain | (none) |
@@ -506,6 +500,8 @@ TP = 97, FN = 3, FP = 193 in the test sentences, plus 203 false alarm(s) in 40 c
 | mag-laro | maglaro | (none) |
 | Nag-lakad | Naglakad | (none) |
 | ka-ibigan | kaibigan | (none) |
+| mag-basa | magbasa | (none) |
+| naka-upo | nakaupo | (none) |
 | Napaka-ganda | Napakaganda | (none) |
 | Nag-trabaho | Nagtrabaho | (none) |
 | pag-tulog | pagtulog | (none) |

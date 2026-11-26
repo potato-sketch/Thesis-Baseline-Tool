@@ -58,12 +58,21 @@ MIN_ENGLISH_STEM_LENGTH = 4   # English roots under Tagalog affixes (magtext -> 
 NGRAM_THRESHOLD = 0.20
 
 # Extensions that are NOT in the paper.  Turn them off with --paper-only
-# (or the GUI checkbox) to run the paper's pipeline exactly:
+# (or the GUI checkbox) to run the paper's pipeline exactly as Section II
+# describes it:
 #   * detection: a prefix written as a separate word ("pag bigay") and a
 #     function word fused with its neighbour ("parin") are flagged -- needed
 #     to reach the space-insertion and space-deletion errors of Table I;
-#   * correction: edit-distance candidates are listed after the space-dash
-#     suggestions instead of only when space-dash finds nothing.
+#   * detection: contractions ("ako'y") are accepted when the bare word is
+#     known; English roots under Tagalog affixes need MIN_ENGLISH_STEM_LENGTH
+#     letters; the code-switching check accepts a prefix + reduplicated
+#     syllable (nagte-text); the compound check rejects function words;
+#   * correction: the dash test (magka-ugnay -> magkaugnay, nagaral ->
+#     nag-aral); edit-distance candidates are listed after the space-dash
+#     suggestions instead of only when space-dash finds nothing; the split
+#     test uses the Tagalog list only (the paper: "a dictionary look-up").
+# Choices the paper leaves open (stemmer rules, metaphone rules, trigram
+# padding and counting, the threshold, tokenisation) are the same in both modes.
 USE_EXTENSIONS = True
 
 # --- Error correction module --------------------------------------------------

@@ -26,7 +26,7 @@ metaphone algorithm. Pure Python standard library — nothing to install.
 | Evaluate, paper-only pipeline | Same, with this project's extensions switched off |
 | Evaluate with UD Ugnayan only | Same, with the treebank as the only Tagalog word list → `results/evaluation_ud.md` |
 | Tune n-gram threshold | The threshold experiment of Section II-B |
-| Unit tests | 29 tests, including every example given in the paper |
+| Unit tests | 33 tests, including every example given in the paper |
 
 The tests also appear in the **Testing** view (beaker icon). The same commands work in the terminal:
 
@@ -80,7 +80,7 @@ sentences:
 | Tagalog word list | Recall | Precision | F-measure | Suggestion adequacy | Right word first |
 |---|---|---|---|---|---|
 | **both** (seed + UD Ugnayan), default | 97.00% | 64.24% | 77.29% | 98.97% | 89.69% |
-| both, paper-only pipeline | 89.00% | 62.68% | 73.55% | 97.75% | |
+| both, paper-only pipeline | 88.00% | 63.31% | 73.64% | 96.59% | 87.50% |
 | seed only | 97.00% | 62.99% | 76.38% | 98.97% | |
 | UD Ugnayan only | 100.00% | 20.16% | 33.56% | 31.00% | 30.00% |
 | *Paper (Octaviano & Borra, 2017)* | *81%* | *53.64%* | *64.53%* | *87.78%* | |
@@ -160,16 +160,31 @@ treebanks in `data/ud/`, and retrain.
 3. *More suggestions.* Edit-distance candidates are listed after the space-dash suggestions.
    The paper only computes them when space-dash finds nothing, so *bahaay* gets only
    "baha ay".
+4. *Dash test.* Space-dash correction also drops a hyphen that Filipino orthography doesn't
+   allow (*magka-ugnay* → *magkaugnay*) or adds one it requires (*nagaral* → *nag-aral*).
+   In paper-only mode the hyphen-insertion errors of Table I are corrected by edit distance
+   instead (deleting the hyphen is one edit).
+5. *Contractions.* *ako'y*, *ganito't* are accepted when the bare word is known. In
+   paper-only mode the stemmer handles them.
+6. *English roots under Tagalog affixes* must have ≥ 4 letters, so *pa-ka-i-not* and
+   *ka-i-big* don't validate misspellings. The paper maps every stem into both automata;
+   in paper-only mode *napakainot* is accepted as *napaka-* + *not*.
+7. *Stricter hyphen checks.* The code-switching check also accepts a prefix plus a
+   reduplicated syllable (*nagte-text*); the compound check rejects function words. In
+   paper-only mode the check is literally "Tagalog prefix + English word" and then
+   "both parts in the Tagalog word list".
+8. *Split test on the Tagalog list.* The paper says the split pairs get "a dictionary
+   look-up", which in its detection module means both word lists. Paper-only mode uses
+   both, so *aklatam* gets "aklat am" (*am* is English) and, since space-dash found
+   something, no edit-distance candidates.
+
+With the extensions off, every step the paper describes runs exactly as written. Only the
+details the paper leaves open (below) are shared by both modes.
 
 **Other choices**
 
-- *Dash test.* Hyphen insertion errors (*magka-ugnay*, Table I) need a rule that the paper
-  doesn't spell out. Space-dash correction here also drops a hyphen that Filipino
-  orthography doesn't allow, or adds one it requires (*nagaral* → *nag-aral*).
 - *Hyphen rule in the stemmer.* A hyphen after a prefix is only accepted before a vowel
   (*mag-aral*). That keeps *pag-kain* detectable.
-- *English roots under Tagalog affixes* must have ≥ 4 letters, so *pa-ka-i-not* and
-  *ka-i-big* don't validate misspellings.
 - *Metaphone.* Filipino vowels are phonemic, so they are kept in three classes (e~i, o~u, a)
   instead of being dropped as in English metaphone.
 - *Trigrams.* Padded with `_` on both sides; frequencies count the distinct stems containing

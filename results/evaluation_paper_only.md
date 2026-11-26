@@ -4,13 +4,13 @@
 
 | Metric | Test sentences | + held-out clean sentences | Paper |
 |---|---|---|---|
-| Recall | 89.00% | 89.00% | 81% |
-| Precision | 100.00% | 62.68% | 53.64% |
-| F-measure | 94.18% | 73.55% | 64.53% |
-| Suggestion adequacy | 97.75% | 97.75% | 87.78% |
-| Correct word ranked first | 88.76% | 88.76% | not reported |
+| Recall | 88.00% | 88.00% | 81% |
+| Precision | 100.00% | 63.31% | 53.64% |
+| F-measure | 93.62% | 73.64% | 64.53% |
+| Suggestion adequacy | 96.59% | 96.59% | 87.78% |
+| Correct word ranked first | 87.50% | 87.50% | not reported |
 
-TP = 89, FN = 11, FP = 0 in the test sentences, plus 53 false alarm(s) in 40 clean sentences (478 words).
+TP = 88, FN = 12, FP = 0 in the test sentences, plus 51 false alarm(s) in 40 clean sentences (478 words).
 
 ## Results per error type (Table I categories)
 
@@ -18,7 +18,7 @@ TP = 89, FN = 11, FP = 0 in the test sentences, plus 53 false alarm(s) in 40 cle
 |---|---|---|---|
 | insertion | 8 | 8 | 7 |
 | deletion | 28 | 27 | 27 |
-| substitution | 37 | 35 | 34 |
+| substitution | 37 | 34 | 32 |
 | space deletion | 9 | 5 | 5 |
 | hyphen insertion | 12 | 12 | 12 |
 | space insertion | 6 | 2 | 2 |
@@ -30,6 +30,7 @@ TP = 89, FN = 11, FP = 0 in the test sentences, plus 53 false alarm(s) in 40 cle
 | maintindhan | maintindihan | stemmed-dictionary (stem: intindi) |
 | asil | asul | n-gram (all trigrams of 'asil' are frequent) |
 | kalabay | kalabaw | n-gram (all trigrams of 'labay' are frequent) |
+| napakainot | napakainit | stemmed-dictionary (stem: not) |
 | kana | ka na | n-gram (all trigrams of 'kana' are frequent) |
 | palang | pa lang | n-gram (all trigrams of 'lang' are frequent) |
 | nalang | na lang | n-gram (all trigrams of 'lang' are frequent) |
@@ -78,13 +79,11 @@ TP = 89, FN = 11, FP = 0 in the test sentences, plus 53 false alarm(s) in 40 cle
 | bokabularyo | n-gram: rare trigram(s) _bo, bok, oka, kab, abu, bul, lar, ary, ryo in stem 'bokabularyo' | 21 |
 | sintomas | n-gram: rare trigram(s) tom, oma, mas in stem 'sintomas' | 22 |
 | dengue | n-gram: rare trigram(s) _de, den, eng, ngu, gue, ue_ in stem 'dengue' | 22 |
-| maiiwasan | n-gram: rare trigram(s) _iw, was in stem 'iwas' | 22 |
 | helmet | n-gram: rare trigram(s) _he, hel, elm, lme, met, et_ in stem 'helmet' | 24 |
 | motorsiklo | n-gram: rare trigram(s) _mo, mot, oto, tor, ors, rsi, ikl, klo in stem 'motorsiklo' | 24 |
 | social | n-gram: rare trigram(s) _so, soc, oci, cia, ial in stem 'social' | 25 |
 | media | n-gram: rare trigram(s) med, edi, dia, ia_ in stem 'media' | 25 |
 | Nagluluksa | n-gram: rare trigram(s) luk, uks, ksa in stem 'luksa' | 26 |
-| pagpanaw | n-gram: rare trigram(s) naw in stem 'naw' | 26 |
 | Binigyang-diin | n-gram: rare trigram(s) nig, igy, gya, ng-, g-d, -di, dii, iin in stem 'binigyang-diin' | 29 |
 | panig | n-gram: rare trigram(s) nig in stem 'nig' | 32 |
 | negosasyon | n-gram: rare trigram(s) _ne, neg, ego, gos, osa, sas in stem 'negosasyon' | 32 |
@@ -108,3 +107,4 @@ TP = 89, FN = 11, FP = 0 in the test sentences, plus 53 false alarm(s) in 40 cle
 |---|---|---|
 | bahaay | bahay | baha ay |
 | Meron | Mayroon | Mayon, Pero |
+| aklatam | aklatan | aklat am |

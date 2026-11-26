@@ -159,7 +159,8 @@ def build_parser() -> argparse.ArgumentParser:
         sp.add_argument("--threshold", type=float, default=None,
                         help=f"n-gram threshold (default {config.NGRAM_THRESHOLD})")
         sp.add_argument("--paper-only", action="store_true",
-                        help="disable the bound-prefix and clitic-split extensions")
+                        help="run the paper's pipeline exactly (disable every extension, "
+                             "see config.USE_EXTENSIONS)")
 
     sp = sub.add_parser("check", help="check a sentence or a text file")
     sp.add_argument("text", nargs="*")

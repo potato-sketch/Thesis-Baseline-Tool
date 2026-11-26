@@ -6,13 +6,18 @@
      mag- + asawa -> mag-asawa);
    * split test -- every split with >= 2 letters per part whose parts are
      both in the dictionary (palang -> pa lang, pal ang, pala ng);
-   * dash test (hyphen rules, implied by Table I's hyphen-insertion errors)
-     -- drop an illegal hyphen (magka-ugnay -> magkaugnay) or add a required
-     one (nagaral -> nag-aral).
+   * dash test (extension, not in the paper) -- drop an illegal hyphen
+     (magka-ugnay -> magkaugnay) or add a required one (nagaral -> nag-aral).
 2. Edit distance -- only if step 1 produced nothing: Levenshtein automaton
    (<= 2 edits) traversed in parallel with the Tagalog DAFSA.
 3. Ranking -- Dice coefficient between the Filipino-metaphone codes of the
    misspelled word and of each candidate (ties: fewer edits, then a-z).
+
+Extensions (config.USE_EXTENSIONS; off with --paper-only): the dash test;
+edit-distance candidates listed after the space-dash ones; and a split test
+that looks the parts up in the Tagalog list only.  With them off, the split
+test uses "a dictionary look-up" as the paper says, i.e. both word lists,
+exactly as the detection module's dictionary look-up does.
 """
 from __future__ import annotations
 
@@ -57,7 +62,10 @@ class ErrorCorrector:
 
     # ---------------------------------------------------- space-dash correction
     def space_dash(self, w: str, next_word: str | None = None) -> list[Suggestion]:
-        return self.merge_test(w, next_word) or self.split_test(w) or self.dash_test(w)
+        found = self.merge_test(w, next_word) or self.split_test(w)
+        if not found and self.detector.use_extensions:
+            found = self.dash_test(w)
+        return found
 
     def merge_test(self, w: str, next_word: str | None) -> list[Suggestion]:
         prefix = w.rstrip("-")
@@ -70,14 +78,17 @@ class ErrorCorrector:
         return [Suggestion(merged, "merge", span=2)]
 
     def split_test(self, w: str) -> list[Suggestion]:
-        tl = self.model.tagalog
+        if self.detector.use_extensions:
+            known = self.model.tagalog.__contains__
+        else:
+            known = self.detector.in_dictionary
         m = config.MIN_SPLIT_LENGTH
         out = []
         for k in range(m, len(w) - m + 1):
             a, b = w[:k], w[k:]
             if "-" in a or "-" in b or "'" in a or "'" in b:
                 continue
-            if a in tl and b in tl:
+            if known(a) and known(b):
                 out.append(Suggestion(f"{a} {b}", "split"))
         return out
 

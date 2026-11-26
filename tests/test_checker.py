@@ -67,10 +67,31 @@ class CorrectionTest(unittest.TestCase):
 
 
 class PaperOnlyModeTest(unittest.TestCase):
+    def setUp(self):
+        self.sc = SpellChecker(MODEL, use_extensions=False)
+
     def test_extensions_off(self):
-        sc = SpellChecker(MODEL, use_extensions=False)
-        flags = {f.word: f.method for f in sc.check("Ang pag bigay ay mabuti.")}
+        flags = {f.word: f.method for f in self.sc.check("Ang pag bigay ay mabuti.")}
         self.assertNotIn("pag", flags)          # bound prefix is not a paper rule
+
+    def test_no_dash_test(self):
+        # The paper has no hyphen rule: magka-ugnay is corrected by edit distance.
+        sources = {s.source for s in self.sc.suggest("magka-ugnay")}
+        self.assertNotIn("dash", sources)
+        self.assertEqual(self.sc.corrector.space_dash("nagaral"), [])
+
+    def test_no_edit_distance_after_space_dash(self):
+        self.assertEqual([s.text for s in self.sc.suggest("parin")], ["pa rin"])
+
+    def test_paper_examples_still_pass(self):
+        flagged = [f.word for f in self.sc.check(
+            "Isinasama niya ako. Magtext ka. Nag-text siya. Mag-research tayo. Araw-araw.")]
+        self.assertEqual(flagged, [])
+
+    def test_hyphen_checks_follow_the_paper(self):
+        det = self.sc.detector
+        self.assertEqual(det.check("nag-text").method, "code-switching")    # prefix + English
+        self.assertEqual(det.check("bahay-araw").method, "compound")        # Tagalog + Tagalog
 
 
 if __name__ == "__main__":

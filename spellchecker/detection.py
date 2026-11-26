@@ -11,10 +11,16 @@ For every token the paper applies, in order:
      `threshold` trigrams of the stemmed profile, otherwise the word is
      flagged.
 
-Two optional extensions (config.USE_EXTENSIONS) make the space errors of the
-paper's Table I detectable; neither is described in the paper:
+Extensions (config.USE_EXTENSIONS; all switched off by --paper-only), none
+of them described in the paper:
   * bound prefix: a prefix written as a separate word ("pag bigay");
-  * clitic split: a function word fused with its neighbour ("parin" = pa rin).
+  * clitic split: a function word fused with its neighbour ("parin" = pa rin);
+  * contractions: "ako'y", "ganito't" accepted when the bare word is known;
+  * stricter checks on steps the paper does describe -- an English root
+    under Tagalog affixes needs >= MIN_ENGLISH_STEM_LENGTH letters, the
+    code-switching check also accepts a prefix plus a reduplicated syllable
+    (nagte-text), and the compound check rejects function words.
+With the extensions off, steps 1-3 are exactly the paper's wording.
 """
 from __future__ import annotations
 
@@ -49,10 +55,14 @@ class ErrorDetector:
         return self.model.in_dictionary(word)
 
     def is_root(self, stem: str) -> bool:
-        """A Tagalog root, or an English root long enough not to match by
-        accident (pa-ka-i-'not', ka-i-'big' must not validate a word)."""
-        return stem in self.model.tagalog or (
-            len(stem) >= config.MIN_ENGLISH_STEM_LENGTH and stem in self.model.english)
+        """A stem the dictionary accepts.  The paper maps the stem into both
+        automata; the extension also requires an English root long enough not
+        to match by accident (pa-ka-i-'not', ka-i-'big' must not validate a word)."""
+        if stem in self.model.tagalog:
+            return True
+        if self.use_extensions and len(stem) < config.MIN_ENGLISH_STEM_LENGTH:
+            return False
+        return stem in self.model.english
 
     def stems(self, word: str) -> list[str]:
         return self.stemmer.valid_stems(word, self.is_root, exclude=self.model.function_words)
@@ -73,7 +83,9 @@ class ErrorDetector:
         # 1a. dictionary look-up
         if self.in_dictionary(w):
             return Detection(word, False, "dictionary")
-        if w.endswith(("'y", "'t")) and self.in_dictionary(w[:-2]) and w[:-2] not in PREFIX_SET:
+        # extension: contraction of a known word ("ako'y", "ganito't")
+        if (self.use_extensions and w.endswith(("'y", "'t")) and self.in_dictionary(w[:-2])
+                and w[:-2] not in PREFIX_SET):
             return Detection(word, False, "dictionary", "contraction")
 
         # extension: a prefix cannot stand alone ("pag bigay", "mag- luto")
@@ -86,15 +98,24 @@ class ErrorDetector:
         if stems:
             return Detection(word, False, "stemmed-dictionary", f"stem: {stems[0]}", stems[0])
 
-        # 2. code-switching and compound-word checking (hyphenated words)
+        # 2. code-switching and compound-word checking (hyphenated words):
+        #    "the first word is checked if it is a Tagalog prefix and the second
+        #    word is checked if it is in English word list ... [else] the module
+        #    checks the two words if exists in the Tagalog word list."
         if "-" in bare:
             a, _, b = bare.partition("-")
-            if is_prefix_form(a, b) and b in self.model.english:
-                return Detection(word, False, "code-switching", f"{a}- + English '{b}'")
-            if a == b and a in tl:
-                return Detection(word, False, "compound", "full reduplication")
-            if a in tl and b in tl and a not in fw and b not in fw:
-                return Detection(word, False, "compound", f"{a} + {b}")
+            if self.use_extensions:
+                if is_prefix_form(a, b) and b in self.model.english:
+                    return Detection(word, False, "code-switching", f"{a}- + English '{b}'")
+                if a == b and a in tl:
+                    return Detection(word, False, "compound", "full reduplication")
+                if a in tl and b in tl and a not in fw and b not in fw:
+                    return Detection(word, False, "compound", f"{a} + {b}")
+            else:
+                if a in PREFIX_SET and b in self.model.english:
+                    return Detection(word, False, "code-switching", f"{a}- + English '{b}'")
+                if a in tl and b in tl:
+                    return Detection(word, False, "compound", f"{a} + {b}")
 
         # extension: function word fused with another word ("parin", "nalang")
         if self.use_extensions and "-" not in w:
