@@ -76,6 +76,14 @@ def _check_lexicon(lexicon: str | None) -> str:
     return lexicon
 
 
+def _check_english(english: str | None) -> str:
+    english = english or config.ENGLISH_LEXICON
+    if english not in config.ENGLISH_LEXICONS:
+        raise ValueError(f"English word list must be one of {config.ENGLISH_LEXICONS}, "
+                         f"not {english!r}")
+    return english
+
+
 def _uses_seed(lexicon: str) -> bool:
     return lexicon in ("seed", "both")
 
@@ -102,31 +110,42 @@ def function_word_sources(lexicon: str) -> list[Path]:
     return paths
 
 
-def english_sources() -> list[Path]:
-    return [config.ENGLISH_WORDLIST, *_extra(config.EXTRA_ENGLISH_DIR)]
+def english_sources(english: str) -> list[Path]:
+    paths = []
+    if _uses_seed(english):
+        paths.append(config.ENGLISH_WORDLIST)
+    if _uses_ud(english):
+        paths.append(config.UD_ENGLISH_WORDS)
+    return [*paths, *_extra(config.EXTRA_ENGLISH_DIR)]
 
 
-def all_sources(lexicon: str) -> list[Path]:
+def all_sources(lexicon: str, english: str) -> list[Path]:
     """Every file the model of this lexicon is built from (for retraining)."""
-    from .ud import treebank_files
+    from .ud import english_treebank_files, treebank_files
     generators = []
     if _uses_seed(lexicon):
         generators.append(config.TAGALOG_PARADIGMS)
     if _uses_ud(lexicon):
         generators += treebank_files()
-    return [*tagalog_sources(lexicon), *function_word_sources(lexicon), *english_sources(),
-            *generators]
+    if _uses_ud(english):
+        generators += english_treebank_files()
+    return [*tagalog_sources(lexicon), *function_word_sources(lexicon),
+            *english_sources(english), *generators]
 
 
 # ------------------------------------------------------------------ training
-def train(lexicon: str | None = None, verbose: bool = False) -> LanguageModel:
-    lexicon = _check_lexicon(lexicon)
+def train(lexicon: str | None = None, verbose: bool = False,
+          english: str | None = None) -> LanguageModel:
+    lexicon, english = _check_lexicon(lexicon), _check_english(english)
     t0 = time.perf_counter()
     if _uses_seed(lexicon):
         ensure_inflections()
     if _uses_ud(lexicon):
         from .ud import ensure_ud_lists
         ensure_ud_lists()
+    if _uses_ud(english):
+        from .ud import ensure_english_ud_list
+        ensure_english_ud_list()
 
     function_words: set[str] = set()
     for path in function_word_sources(lexicon):
@@ -140,16 +159,18 @@ def train(lexicon: str | None = None, verbose: bool = False) -> LanguageModel:
     # UD tags 'bago' "before" as SCONJ, but 'bago' "new" takes affixes and the
     # linker (bagong, baguhin), so it must stay usable as a stem.
     function_words -= content
-    english: set[str] = set()
-    for path in english_sources():
+    english_lexicon = english
+    english_words: set[str] = set()
+    for path in english_sources(english_lexicon):
         if path.exists():
-            english.update(read_wordlist(path))
+            english_words.update(read_wordlist(path))
     if verbose:
-        print(f"  word lists ({lexicon}): {len(tagalog):,} Tagalog, {len(english):,} English, "
+        print(f"  word lists (Tagalog {lexicon}, English {english_lexicon}): "
+              f"{len(tagalog):,} Tagalog, {len(english_words):,} English, "
               f"{len(function_words):,} function words")
 
     tl_automaton = DAFSA.build(tagalog)
-    en_automaton = DAFSA.build(english)
+    en_automaton = DAFSA.build(english_words)
     if verbose:
         print(f"  Tagalog DAFSA: {tl_automaton.num_states:,} states, "
               f"{tl_automaton.num_transitions:,} transitions")
@@ -166,17 +187,18 @@ def train(lexicon: str | None = None, verbose: bool = False) -> LanguageModel:
     info = {
         "version": MODEL_VERSION,
         "lexicon": lexicon,
+        "english_lexicon": english_lexicon,
         "trained_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         "seconds": round(time.perf_counter() - t0, 2),
         "tagalog_words": len(tagalog),
-        "english_words": len(english),
+        "english_words": len(english_words),
         "function_words": len(function_words),
         "stems": len(stems),
         "trigram_types": len(profile.counts),
         "tagalog_states": tl_automaton.num_states,
         "english_states": en_automaton.num_states,
-        "sources": [str(p.relative_to(config.PROJECT_ROOT)) for p in all_sources(lexicon)
-                    if p.exists()],
+        "sources": [str(p.relative_to(config.PROJECT_ROOT))
+                    for p in all_sources(lexicon, english_lexicon) if p.exists()],
     }
     return LanguageModel(tl_automaton, en_automaton, frozenset(function_words), profile, info)
 
@@ -211,24 +233,25 @@ _MODEL_CODE = [Path(__file__).with_name(n) for n in
                 "config.py", "ud.py")]
 
 
-def is_stale(lexicon: str | None = None) -> bool:
+def is_stale(lexicon: str | None = None, english: str | None = None) -> bool:
     """True if a word list, or code that shapes the model, changed since training."""
-    lexicon = _check_lexicon(lexicon)
-    path = config.model_path(lexicon)
+    lexicon, english = _check_lexicon(lexicon), _check_english(english)
+    path = config.model_path(lexicon, english)
     if not path.exists():
         return True
     built = path.stat().st_mtime
     return any(p.exists() and p.stat().st_mtime > built
-               for p in [*all_sources(lexicon), *_MODEL_CODE])
+               for p in [*all_sources(lexicon, english), *_MODEL_CODE])
 
 
 def load_or_train(lexicon: str | None = None, force: bool = False,
-                  verbose: bool = False) -> LanguageModel:
-    """Load the saved model of a lexicon ("seed", "ud" or "both"; default
-    config.LEXICON), retraining first if one of its resources changed."""
-    lexicon = _check_lexicon(lexicon)
-    path = config.model_path(lexicon)
-    if not force and not is_stale(lexicon):
+                  verbose: bool = False, english: str | None = None) -> LanguageModel:
+    """Load the saved model of a Tagalog lexicon and an English lexicon ("seed",
+    "ud" or "both"; defaults config.LEXICON and config.ENGLISH_LEXICON),
+    retraining first if one of its resources changed."""
+    lexicon, english = _check_lexicon(lexicon), _check_english(english)
+    path = config.model_path(lexicon, english)
+    if not force and not is_stale(lexicon, english):
         try:
             model = load(path)
             if model.info.get("version") == MODEL_VERSION:
@@ -236,8 +259,8 @@ def load_or_train(lexicon: str | None = None, force: bool = False,
         except (OSError, ValueError, KeyError):
             pass
     if verbose:
-        print(f"Training the language model ({lexicon} word list) ...")
-    model = train(lexicon, verbose=verbose)
+        print(f"Training the language model (Tagalog {lexicon}, English {english}) ...")
+    model = train(lexicon, verbose=verbose, english=english)
     save(model, path)
     if verbose:
         print(f"  saved to {path} in {model.info['seconds']} s")

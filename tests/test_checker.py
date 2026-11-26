@@ -78,10 +78,13 @@ class PaperOnlyModeTest(unittest.TestCase):
         # The paper has no hyphen rule: magka-ugnay is corrected by edit distance.
         sources = {s.source for s in self.sc.suggest("magka-ugnay")}
         self.assertNotIn("dash", sources)
-        self.assertEqual(self.sc.corrector.space_dash("nagaral"), [])
+        # no hyphen is added; the split test may still find "nag aral" ('nag' is English)
+        self.assertNotIn("nag-aral", [s.text for s in self.sc.corrector.space_dash("nagaral")])
 
     def test_no_edit_distance_after_space_dash(self):
-        self.assertEqual([s.text for s in self.sc.suggest("parin")], ["pa rin"])
+        suggestions = self.sc.suggest("parin")
+        self.assertEqual(suggestions[0].text, "pa rin")
+        self.assertNotIn("edit-distance", {s.source for s in suggestions})
 
     def test_paper_examples_still_pass(self):
         flagged = [f.word for f in self.sc.check(

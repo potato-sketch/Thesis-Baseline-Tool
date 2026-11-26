@@ -1,4 +1,6 @@
-"""Build the Tagalog word lists from Universal Dependencies treebanks (CoNLL-U).
+"""Build word lists from Universal Dependencies treebanks (CoNLL-U).
+
+Tagalog (data/ud/) and English (data/ud_english/, see the end of this file).
 
 Every *.conllu file in data/ud/ is read (e.g. UD_Tagalog-Ugnayan, -TRG,
 -NewsCrawl) and turned into two plain word lists that the modeling module
@@ -18,6 +20,8 @@ How the CoNLL-U columns are used
 """
 from __future__ import annotations
 
+import re
+from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -114,3 +118,96 @@ def ensure_ud_lists(force: bool = False) -> tuple[Path, Path]:
         words_path.write_text(header + "\n".join(sorted(lex.words)) + "\n", encoding="utf-8")
         fw_path.write_text(header + "\n".join(sorted(lex.function_words)) + "\n", encoding="utf-8")
     return words_path, fw_path
+
+
+# ------------------------------------------------------------------ English
+# Every data/ud_english/*.conllu (UD_English-EWT: blogs, reviews, e-mail, web)
+# becomes data/ud_english/english_ud_words.txt, the English automaton used
+# for code-switching (magtext, nag-research).  Web text is noisy, so a word
+# is kept only if it is a plain alphabetic word:
+#   FORM   lower-cased; tokens tagged Typo=Yes or Foreign=Yes are skipped
+#          (EWT marks misspellings such as 'accomodate'), so are PUNCT, SYM,
+#          NUM, X and, by default, PROPN (names: Enron, Houston).
+#   LEMMA  added (corrected spelling for typos: accomodate -> accommodate).
+#   MWT    a multiword token such as "gonna" (gon + na) keeps its written form
+#          only; its pieces are not words ('na' is Tagalog, not English).
+#   Letters only (an internal hyphen is allowed: e-mail); no digits or
+#   apostrophes; one-letter words except 'a' and 'i' are dropped.
+ENGLISH_SKIPPED = frozenset({"PUNCT", "SYM", "NUM", "X"})
+_ENGLISH_WORD = re.compile(r"[a-z]{2,}(?:-[a-z]+)*|[ai]")
+
+
+def _english(text: str) -> str | None:
+    w = normalize(text.strip())
+    return w if _ENGLISH_WORD.fullmatch(w) else None
+
+
+@dataclass
+class UDEnglishLexicon:
+    counts: Counter = field(default_factory=Counter)
+    sentences: int = 0
+    tokens: int = 0
+    files: list[str] = field(default_factory=list)
+
+    def words(self, min_count: int = 1) -> set[str]:
+        return {w for w, n in self.counts.items() if n >= min_count}
+
+
+def read_english_treebanks(paths: list[Path], include_proper_nouns: bool = False) -> UDEnglishLexicon:
+    lex = UDEnglishLexicon()
+    for path in paths:
+        lex.files.append(path.name)
+        fused_last = 0
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.startswith("# sent_id"):
+                lex.sentences += 1
+            if not line or line.startswith("#"):
+                continue
+            cols = line.split("\t")
+            if len(cols) != 10 or "." in cols[0]:
+                continue
+            if "-" in cols[0]:                           # multiword token "3-4": gonna
+                fused_last = int(cols[0].split("-")[1])
+                w = _english(cols[1])
+                if w and "Typo=Yes" not in cols[9]:
+                    lex.counts[w] += 1
+                continue
+            index, form, lemma, upos, feats = int(cols[0]), cols[1], cols[2], cols[3], cols[5]
+            lex.tokens += 1
+            if index <= fused_last:                      # piece of a multiword token
+                continue
+            fused_last = 0
+            if upos in ENGLISH_SKIPPED or "Foreign=Yes" in feats or \
+                    (upos == "PROPN" and not include_proper_nouns):
+                continue
+            w = _english(form)
+            if w and "Typo=Yes" not in feats:
+                lex.counts[w] += 1
+            root = _english(lemma)
+            if root and root != w:
+                lex.counts[root] += 1
+    return lex
+
+
+def english_treebank_files() -> list[Path]:
+    d = config.UD_ENGLISH_DIR
+    return sorted(d.glob("*.conllu")) if d.exists() else []
+
+
+def ensure_english_ud_list(force: bool = False) -> Path:
+    """(Re)generate the English UD word list when a treebank is newer than it."""
+    files = english_treebank_files()
+    path = config.UD_ENGLISH_WORDS
+    if not files:
+        raise FileNotFoundError(
+            f"No *.conllu treebank found in {config.UD_ENGLISH_DIR}. Download "
+            "github.com/UniversalDependencies/UD_English-EWT and copy its .conllu files there")
+    if force or not path.exists() or path.stat().st_mtime < max(p.stat().st_mtime for p in files):
+        lex = read_english_treebanks(files, config.UD_ENGLISH_INCLUDE_PROPER_NOUNS)
+        words = lex.words(config.UD_ENGLISH_MIN_COUNT)
+        header = (f"# GENERATED from {', '.join(lex.files)} ({lex.sentences} sentences, "
+                  f"{lex.tokens} syntactic words) by spellchecker/ud.py.\n"
+                  f"# {len(words)} words (min count {config.UD_ENGLISH_MIN_COUNT}). "
+                  "Do not edit by hand: replace or add .conllu files and retrain instead.\n")
+        path.write_text(header + "\n".join(sorted(words)) + "\n", encoding="utf-8")
+    return path

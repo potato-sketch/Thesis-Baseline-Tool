@@ -24,9 +24,11 @@ SAMPLE_TEXT = (
 
 
 class SpellCheckerApp:
-    def __init__(self, root: tk.Tk, lexicon: str | None = None) -> None:
+    def __init__(self, root: tk.Tk, lexicon: str | None = None,
+                 english: str | None = None) -> None:
         self.root = root
         self.lexicon = tk.StringVar(value=lexicon or config.LEXICON)
+        self.english = tk.StringVar(value=english or config.ENGLISH_LEXICON)
         self.model = None
         self.checker: SpellChecker | None = None
         self.flags: list[Flag] = []
@@ -34,8 +36,14 @@ class SpellCheckerApp:
         self.ignored: set[str] = set()
 
         root.title("Filipino Spell Checker - Octaviano & Borra (TENCON 2017) replication")
-        root.geometry("1100x640")
-        root.minsize(820, 480)
+        # Sizes are given for a 96-dpi screen and scaled, so the window keeps its
+        # proportions at 125 %/150 % display scaling (fonts scale automatically).
+        self.scale = max(1.0, root.winfo_fpixels("1i") / 96)
+        screen_w, screen_h = root.winfo_screenwidth(), root.winfo_screenheight()
+        root.geometry(f"{min(self._px(1100), int(screen_w * 0.95))}x"
+                      f"{min(self._px(640), int(screen_h * 0.85))}")
+        root.minsize(min(self._px(820), int(screen_w * 0.8)),
+                     min(self._px(480), int(screen_h * 0.7)))
         style = ttk.Style(root)
         if "vista" in style.theme_names():
             style.theme_use("vista")
@@ -51,11 +59,16 @@ class SpellCheckerApp:
             side="bottom", fill="x")
         body = ttk.Frame(root, padding=(10, 0, 10, 0))
         body.pack(fill="both", expand=True)
-        self._build_editor(body)
+        # sidebar first: pack gives space in packing order, so a wide editor
+        # could otherwise squeeze the suggestions panel down to nothing
         self._build_sidebar(body)
+        self._build_editor(body)
 
         self.text.insert("1.0", SAMPLE_TEXT)
         root.after(100, self._load_model)
+
+    def _px(self, pixels: int) -> int:
+        return round(pixels * self.scale)
 
     # ---------------------------------------------------------------- layout
     def _build_toolbar(self) -> None:
@@ -65,11 +78,12 @@ class SpellCheckerApp:
         ttk.Button(bar, text="Open file...", command=self.open_file).pack(side="left", padx=6)
         ttk.Button(bar, text="Clear", command=self.clear).pack(side="left")
         ttk.Separator(bar, orient="vertical").pack(side="left", fill="y", padx=10)
-        ttk.Label(bar, text="Word list").pack(side="left")
-        combo = ttk.Combobox(bar, textvariable=self.lexicon, values=config.LEXICONS,
-                             state="readonly", width=6)
-        combo.pack(side="left", padx=(4, 10))
-        combo.bind("<<ComboboxSelected>>", lambda _e: self._load_model())
+        for label, var, values in (("Tagalog list", self.lexicon, config.LEXICONS),
+                                   ("English list", self.english, config.ENGLISH_LEXICONS)):
+            ttk.Label(bar, text=label).pack(side="left")
+            combo = ttk.Combobox(bar, textvariable=var, values=values, state="readonly", width=6)
+            combo.pack(side="left", padx=(4, 10))
+            combo.bind("<<ComboboxSelected>>", lambda _e: self._load_model())
         ttk.Label(bar, text="n-gram threshold").pack(side="left")
         scale = ttk.Scale(bar, from_=0.05, to=1.0, variable=self.threshold, length=160,
                           command=lambda _v: self.threshold_label.config(
@@ -87,7 +101,8 @@ class SpellCheckerApp:
     def _build_editor(self, parent: ttk.Frame) -> None:
         frame = ttk.Frame(parent)
         frame.pack(side="left", fill="both", expand=True)
-        self.text = tk.Text(frame, wrap="word", font=("Segoe UI", 13), undo=True,
+        # width=40: a small requested width; the editor still expands to fill the window
+        self.text = tk.Text(frame, wrap="word", font=("Segoe UI", 13), undo=True, width=40,
                             padx=10, pady=10, relief="solid", borderwidth=1)
         scroll = ttk.Scrollbar(frame, command=self.text.yview)
         self.text.configure(yscrollcommand=scroll.set)
@@ -101,7 +116,7 @@ class SpellCheckerApp:
         self.text.bind("<Control-Return>", lambda _e: (self.check(), "break")[1])
 
     def _build_sidebar(self, parent: ttk.Frame) -> None:
-        side = ttk.Frame(parent, width=320, padding=(12, 0, 0, 0))
+        side = ttk.Frame(parent, width=self._px(320), padding=(self._px(12), 0, 0, 0))
         side.pack(side="right", fill="y")
         side.pack_propagate(False)
         ttk.Label(side, text="Flagged words", font=("Segoe UI", 10, "bold")).pack(anchor="w")
@@ -112,7 +127,7 @@ class SpellCheckerApp:
 
         self.word_label = ttk.Label(side, text="", font=("Segoe UI", 14, "bold"))
         self.word_label.pack(anchor="w")
-        self.reason_label = ttk.Label(side, text="", wraplength=300, foreground="#555")
+        self.reason_label = ttk.Label(side, text="", wraplength=self._px(300), foreground="#555")
         self.reason_label.pack(anchor="w", pady=(0, 8))
 
         ttk.Label(side, text="Suggestions (ranked)", font=("Segoe UI", 10, "bold")).pack(anchor="w")
@@ -127,11 +142,12 @@ class SpellCheckerApp:
 
     # ----------------------------------------------------------------- model
     def _load_model(self) -> None:
-        self.status.set(f"Loading the '{self.lexicon.get()}' word list ...")
+        self.status.set(f"Loading the '{self.lexicon.get()}' Tagalog and "
+                        f"'{self.english.get()}' English word lists ...")
         self.root.config(cursor="watch")
         self.root.update_idletasks()
         try:
-            self.model = load_or_train(self.lexicon.get())
+            self.model = load_or_train(self.lexicon.get(), english=self.english.get())
         except Exception as exc:  # show the problem instead of a silent crash
             messagebox.showerror("Could not load the model", str(exc))
             self.status.set("Model not loaded.")
@@ -153,7 +169,7 @@ class SpellCheckerApp:
         self.root.config(cursor="watch")
         self.root.update_idletasks()
         try:
-            self.model = load_or_train(self.lexicon.get(), force=True)
+            self.model = load_or_train(self.lexicon.get(), force=True, english=self.english.get())
         finally:
             self.root.config(cursor="")
         info = self.model.info
@@ -178,7 +194,9 @@ class SpellCheckerApp:
         words = len([t for t in content.split() if t.strip()])
         self.status.set(f"{len(self.flags)} misspelled word(s) in {words} words  |  "
                         f"threshold {self.checker.threshold:.2f}  |  '{self.lexicon.get()}' "
-                        f"Tagalog word list: {self.model.info.get('tagalog_words', 0):,} words")
+                        f"Tagalog: {self.model.info.get('tagalog_words', 0):,} words  |  "
+                        f"'{self.english.get()}' English: "
+                        f"{self.model.info.get('english_words', 0):,} words")
 
     def _show(self, index: int | None) -> None:
         self.current = index
@@ -247,14 +265,14 @@ class SpellCheckerApp:
         self.check()
 
 
-def main(lexicon: str | None = None) -> None:
+def main(lexicon: str | None = None, english: str | None = None) -> None:
     try:
         from ctypes import windll
         windll.shcore.SetProcessDpiAwareness(1)   # crisp text on high-DPI Windows screens
     except Exception:
         pass
     root = tk.Tk()
-    SpellCheckerApp(root, lexicon)
+    SpellCheckerApp(root, lexicon, english)
     root.mainloop()
 
 

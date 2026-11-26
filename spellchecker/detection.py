@@ -80,8 +80,10 @@ class ErrorDetector:
         bare = w.rstrip("-")
         tl, fw = self.model.tagalog, self.model.function_words
 
-        # 1a. dictionary look-up
-        if self.in_dictionary(w):
+        # 1a. dictionary look-up.  Extension: a Tagalog prefix standing alone is
+        # not rescued by the English list ("Nag aral": 'nag' is also English).
+        prefix_alone = self.use_extensions and bare in PREFIX_SET and bare not in tl
+        if w in tl or (w in self.model.english and not (prefix_alone and len(bare) >= 3)):
             return Detection(word, False, "dictionary")
         # extension: contraction of a known word ("ako'y", "ganito't")
         if (self.use_extensions and w.endswith(("'y", "'t")) and self.in_dictionary(w[:-2])
@@ -89,7 +91,7 @@ class ErrorDetector:
             return Detection(word, False, "dictionary", "contraction")
 
         # extension: a prefix cannot stand alone ("pag bigay", "mag- luto")
-        if self.use_extensions and bare in PREFIX_SET and bare not in tl:
+        if prefix_alone:
             return Detection(word, True, "bound-prefix",
                              f'"{bare}" is a prefix written apart from its root')
 

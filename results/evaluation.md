@@ -1,16 +1,16 @@
-# Evaluation of the Filipino spell checker (both word list)
+# Evaluation of the Filipino spell checker (Tagalog: both word list, English: ud word list)
 
 100 test sentences, n-gram threshold 0.20, with extensions.
 
 | Metric | Test sentences | + held-out clean sentences | Paper |
 |---|---|---|---|
 | Recall | 97.00% | 97.00% | 81% |
-| Precision | 100.00% | 64.24% | 53.64% |
-| F-measure | 98.48% | 77.29% | 64.53% |
+| Precision | 100.00% | 64.67% | 53.64% |
+| F-measure | 98.48% | 77.60% | 64.53% |
 | Suggestion adequacy | 98.97% | 98.97% | 87.78% |
 | Correct word ranked first | 89.69% | 89.69% | not reported |
 
-TP = 97, FN = 3, FP = 0 in the test sentences, plus 54 false alarm(s) in 40 clean sentences (478 words).
+TP = 97, FN = 3, FP = 0 in the test sentences, plus 53 false alarm(s) in 40 clean sentences (478 words).
 
 ## Results per error type (Table I categories)
 
@@ -49,6 +49,7 @@ TP = 97, FN = 3, FP = 0 in the test sentences, plus 54 false alarm(s) in 40 clea
 | matrikula | n-gram: rare trigram(s) _tr, tri, rik, iku in stem 'trikula' | 4 |
 | alituntunin | n-gram: rare trigram(s) itu, tun, unt, ntu, tu_ in stem 'alituntu' | 5 |
 | lokal | n-gram: rare trigram(s) _lo, lok, oka in stem 'lokal' | 5 |
+| photosynthesis | n-gram: rare trigram(s) _ph, pho, hot, oto, tos, osy, syn, ynt, nth, the, hes, esi, sis in stem 'photosynthesis' | 6 |
 | Nagtipon-tipon | n-gram: rare trigram(s) tip, ipo in stem 'tipon' | 7 |
 | irigasyon | n-gram: rare trigram(s) _ri, rig, gas in stem 'rigasyon' | 7 |
 | Pinuri | n-gram: rare trigram(s) pur, uri, ri_ in stem 'puri' | 8 |
@@ -74,8 +75,6 @@ TP = 97, FN = 3, FP = 0 in the test sentences, plus 54 false alarm(s) in 40 clea
 | maiiwasan | n-gram: rare trigram(s) _iw, was in stem 'iwas' | 22 |
 | helmet | n-gram: rare trigram(s) _he, hel, elm, lme, met, et_ in stem 'helmet' | 24 |
 | motorsiklo | n-gram: rare trigram(s) _mo, mot, oto, tor, ors, rsi, ikl, klo in stem 'motorsiklo' | 24 |
-| social | n-gram: rare trigram(s) _so, soc, oci, cia, ial in stem 'social' | 25 |
-| media | n-gram: rare trigram(s) med, edi, dia, ia_ in stem 'media' | 25 |
 | Nagluluksa | n-gram: rare trigram(s) luk, uks, ksa in stem 'luksa' | 26 |
 | pagpanaw | n-gram: rare trigram(s) naw in stem 'naw' | 26 |
 | Binigyang-diin | n-gram: rare trigram(s) nig, igy, gya, ng-, g-d, -di, dii, iin in stem 'binigyang-diin' | 29 |

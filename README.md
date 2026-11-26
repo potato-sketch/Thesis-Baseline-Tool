@@ -86,15 +86,15 @@ error-free sentences** on other topics whose vocabulary was deliberately *not* a
 lexicon; every flag on them is a false positive (out-of-vocabulary words — the same cause the
 paper gives for its false positives).
 
-n-gram threshold 0.20, precision counted over the test sentences plus the held-out clean
-sentences:
+n-gram threshold 0.20, English word list from UD English-EWT (see below), precision counted
+over the test sentences plus the held-out clean sentences:
 
 | Tagalog word list | Recall | Precision | F-measure | Suggestion adequacy | Right word first |
 |---|---|---|---|---|---|
-| **both** (seed + UD Ugnayan), default | 97.00% | 64.24% | 77.29% | 98.97% | 89.69% |
-| both, paper-only pipeline | 88.00% | 63.31% | 73.64% | 96.59% | 87.50% |
-| seed only | 97.00% | 62.99% | 76.38% | 98.97% | |
-| UD Ugnayan only | 100.00% | 20.16% | 33.56% | 31.00% | 30.00% |
+| **both** (seed + UD Ugnayan), default | 97.00% | 64.67% | 77.60% | 98.97% | 89.69% |
+| both, paper-only pipeline | 87.00% | 64.44% | 74.04% | 91.95% | 81.61% |
+| seed only | 97.00% | 63.40% | 76.68% | 98.97% | 89.69% |
+| UD Ugnayan only | 100.00% | 20.58% | 34.13% | 31.00% | |
 | *Paper (Octaviano & Borra, 2017)* | *81%* | *53.64%* | *64.53%* | *87.78%* | |
 
 Full tables (per error type, false negatives, false alarms, failed suggestions) are in
@@ -147,6 +147,42 @@ For a UD-based word list of useful size,
 300× larger. Drop its `.conllu` files into `data/ud/` and retrain. Keep any sentences you
 evaluate on out of the word list.
 
+## English word list: UD English-EWT
+
+The English automaton (code-switching: *magtext, nag-research*) is built from
+[UD_English-EWT](https://github.com/UniversalDependencies/UD_English-EWT) (CC BY-SA 4.0;
+its README and license are in [data/ud_english/](data/ud_english/)): 16,622 sentences and
+254,820 words of blogs, reviews, e-mail and web text. Every `*.conllu` file in that folder
+is converted by [spellchecker/ud.py](spellchecker/ud.py) into `english_ud_words.txt`
+(14,103 words). Web text is noisy, so the converter keeps only plain alphabetic words:
+
+| Skipped | Why |
+|---|---|
+| Tokens marked `Typo=Yes` (*accomodate, actualy*) | EWT annotates misspellings; the corrected lemma (*accommodate*) is kept |
+| `Foreign=Yes`, and UPOS PUNCT, SYM, NUM, X | Not English words |
+| PROPN (`UD_ENGLISH_INCLUDE_PROPER_NOUNS`) | Names (*Enron, Houston*) would accept misspellings |
+| Pieces of multiword tokens (*gonna* = *gon* + *na*) | Only the written form is kept; *na* is Tagalog, not English |
+| Digits, apostrophes, one-letter words other than *a* and *i* | |
+
+Choose the English list with `ENGLISH_LEXICON` in [config.py](spellchecker/config.py),
+`--english seed|ud|both` on the command line, or the **English list** dropdown in the app.
+`seed` is the earlier hand-written [data/english_words.txt](data/english_words.txt) (~700 words).
+With the default Tagalog list:
+
+| English word list | Recall | Precision | F-measure | Suggestion adequacy |
+|---|---|---|---|---|
+| seed (700 words) | 97.00% | 64.24% | 77.29% | 98.97% |
+| **ud** (EWT, 14,103 words), default | 97.00% | 64.67% | 77.60% | 98.97% |
+| both | 97.00% | 65.10% | 77.91% | 98.97% |
+
+A larger English list also contains words that are Tagalog prefixes (*nag* "to nag", *pan*,
+*sing*). Extension 1 below therefore flags a prefix of three or more letters written alone
+even when the English list knows it. In paper-only mode the split test uses both word
+lists, so it now finds splits such as *nag aral* and *par in*. Because the paper computes
+edit-distance candidates only when space-dash finds nothing, paper-only suggestion adequacy
+drops (96.59% with the seed English list, 91.95% with EWT). That is the paper's rule
+applied to a bigger dictionary.
+
 ## Assumptions and deviations
 
 The paper leaves several details open. Every choice made here is listed below.
@@ -156,14 +192,16 @@ ships a seed lexicon: [data/tagalog_words.txt](data/tagalog_words.txt) (~900 con
 words), [data/tagalog_function_words.txt](data/tagalog_function_words.txt),
 [data/tagalog_paradigms.tsv](data/tagalog_paradigms.tsv) (≈ 250 roots with their
 affixation classes, expanded to ~2,300 inflected forms in `tagalog_inflections.txt`), and
-[data/english_words.txt](data/english_words.txt) (~700 words). That is 3,500 Tagalog
-words in total, far smaller than a real dictionary. The default word list adds the UD
+[data/english_words.txt](data/english_words.txt) (~700 words; the default English list is
+now UD English-EWT, see above). That is 3,500 Tagalog words in total, far smaller than a
+real dictionary. The default word list adds the UD
 Ugnayan treebank (see above). Put bigger lists in `data/extra/` (see its README) or more
 treebanks in `data/ud/`, and retrain.
 
 **Extensions** (on by default; `--paper-only` or the GUI checkbox turns them off):
 
-1. *Bound-prefix check.* A prefix written as its own word (*pag bigay*) is flagged. Without it,
+1. *Bound-prefix check.* A prefix written as its own word (*pag bigay*) is flagged, even when
+   it is also an English word (*nag*). Without it,
    the merge test can never run, because detection accepts *pag* by its trigrams
    (paper-only: 0 of 6 space insertions detected).
 2. *Clitic-split check.* A function word fused with a neighbour (*parin, nalang, kana*) is
@@ -207,7 +245,8 @@ details the paper leaves open (below) are shared by both modes.
 ```
 spellchecker/      the three modules + CLI + GUI
 data/              word lists, paradigms, test sentences, held-out clean sentences
-data/ud/           UD treebanks (*.conllu) and the word lists generated from them
+data/ud/           Tagalog UD treebanks (*.conllu) and the word lists generated from them
+data/ud_english/   English UD treebank (EWT) and the English word list generated from it
 data/extra/        drop-in folders for larger word lists
 results/           evaluation reports (Markdown)
 tests/             unittest suite

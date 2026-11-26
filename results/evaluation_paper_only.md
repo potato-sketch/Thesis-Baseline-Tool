@@ -1,25 +1,25 @@
-# Evaluation of the Filipino spell checker (both word list)
+# Evaluation of the Filipino spell checker (Tagalog: both word list, English: ud word list)
 
 100 test sentences, n-gram threshold 0.20, paper-only pipeline.
 
 | Metric | Test sentences | + held-out clean sentences | Paper |
 |---|---|---|---|
-| Recall | 88.00% | 88.00% | 81% |
-| Precision | 100.00% | 63.31% | 53.64% |
-| F-measure | 93.62% | 73.64% | 64.53% |
-| Suggestion adequacy | 96.59% | 96.59% | 87.78% |
-| Correct word ranked first | 87.50% | 87.50% | not reported |
+| Recall | 87.00% | 87.00% | 81% |
+| Precision | 100.00% | 64.44% | 53.64% |
+| F-measure | 93.05% | 74.04% | 64.53% |
+| Suggestion adequacy | 91.95% | 91.95% | 87.78% |
+| Correct word ranked first | 81.61% | 81.61% | not reported |
 
-TP = 88, FN = 12, FP = 0 in the test sentences, plus 51 false alarm(s) in 40 clean sentences (478 words).
+TP = 87, FN = 13, FP = 0 in the test sentences, plus 48 false alarm(s) in 40 clean sentences (478 words).
 
 ## Results per error type (Table I categories)
 
 | Error type | Count | Detected | Correct word suggested |
 |---|---|---|---|
 | insertion | 8 | 8 | 7 |
-| deletion | 28 | 27 | 27 |
-| substitution | 37 | 34 | 32 |
-| space deletion | 9 | 5 | 5 |
+| deletion | 28 | 27 | 25 |
+| substitution | 37 | 34 | 30 |
+| space deletion | 9 | 4 | 4 |
 | hyphen insertion | 12 | 12 | 12 |
 | space insertion | 6 | 2 | 2 |
 
@@ -31,14 +31,15 @@ TP = 88, FN = 12, FP = 0 in the test sentences, plus 51 false alarm(s) in 40 cle
 | asil | asul | n-gram (all trigrams of 'asil' are frequent) |
 | kalabay | kalabaw | n-gram (all trigrams of 'labay' are frequent) |
 | napakainot | napakainit | stemmed-dictionary (stem: not) |
+| parin | pa rin | stemmed-dictionary (stem: pad) |
 | kana | ka na | n-gram (all trigrams of 'kana' are frequent) |
-| palang | pa lang | n-gram (all trigrams of 'lang' are frequent) |
+| palang | pa lang | stemmed-dictionary (stem: pal) |
 | nalang | na lang | n-gram (all trigrams of 'lang' are frequent) |
-| nanaman | na naman | n-gram (all trigrams of 'aman' are frequent) |
+| nanaman | na naman | stemmed-dictionary (stem: ban) |
 | pag bigay | pagbigay | n-gram (all trigrams of 'pag' are frequent) |
-| Nag aral | Nag-aral | n-gram (all trigrams of 'nag' are frequent) |
+| Nag aral | Nag-aral | dictionary |
 | pinag usapan | pinag-usapan | n-gram (all trigrams of 'pag' are frequent) |
-| Nag lalaro | Naglalaro | n-gram (all trigrams of 'nag' are frequent) |
+| Nag lalaro | Naglalaro | dictionary |
 
 ## False positives in the test sentences
 
@@ -58,6 +59,7 @@ TP = 88, FN = 12, FP = 0 in the test sentences, plus 51 false alarm(s) in 40 cle
 | matrikula | n-gram: rare trigram(s) _tr, tri, rik, iku in stem 'trikula' | 4 |
 | alituntunin | n-gram: rare trigram(s) itu, tun, unt, ntu, tu_ in stem 'alituntu' | 5 |
 | lokal | n-gram: rare trigram(s) _lo, lok, oka in stem 'lokal' | 5 |
+| photosynthesis | n-gram: rare trigram(s) _ph, pho, hot, oto, tos, osy, syn, ynt, nth, the, hes, esi, sis in stem 'photosynthesis' | 6 |
 | Nagtipon-tipon | n-gram: rare trigram(s) tip, ipo in stem 'tipon' | 7 |
 | irigasyon | n-gram: rare trigram(s) _ri, rig, gas in stem 'rigasyon' | 7 |
 | Pinuri | n-gram: rare trigram(s) pur, uri, ri_ in stem 'puri' | 8 |
@@ -75,17 +77,13 @@ TP = 88, FN = 12, FP = 0 in the test sentences, plus 51 false alarm(s) in 40 cle
 | koponan | n-gram: rare trigram(s) kop, opo in stem 'kopo' | 18 |
 | kampeonato | n-gram: rare trigram(s) mpe, peo, eon, ona, nat in stem 'kampeonato' | 18 |
 | boluntaryo | n-gram: rare trigram(s) _bo, bol, olu, unt, tar, ary, ryo in stem 'boluntaryo' | 19 |
-| Napansin | n-gram: rare trigram(s) ans, ns_ in stem 'pans' | 20 |
 | bokabularyo | n-gram: rare trigram(s) _bo, bok, oka, kab, abu, bul, lar, ary, ryo in stem 'bokabularyo' | 21 |
 | sintomas | n-gram: rare trigram(s) tom, oma, mas in stem 'sintomas' | 22 |
 | dengue | n-gram: rare trigram(s) _de, den, eng, ngu, gue, ue_ in stem 'dengue' | 22 |
 | helmet | n-gram: rare trigram(s) _he, hel, elm, lme, met, et_ in stem 'helmet' | 24 |
 | motorsiklo | n-gram: rare trigram(s) _mo, mot, oto, tor, ors, rsi, ikl, klo in stem 'motorsiklo' | 24 |
-| social | n-gram: rare trigram(s) _so, soc, oci, cia, ial in stem 'social' | 25 |
-| media | n-gram: rare trigram(s) med, edi, dia, ia_ in stem 'media' | 25 |
 | Nagluluksa | n-gram: rare trigram(s) luk, uks, ksa in stem 'luksa' | 26 |
 | Binigyang-diin | n-gram: rare trigram(s) nig, igy, gya, ng-, g-d, -di, dii, iin in stem 'binigyang-diin' | 29 |
-| panig | n-gram: rare trigram(s) nig in stem 'nig' | 32 |
 | negosasyon | n-gram: rare trigram(s) _ne, neg, ego, gos, osa, sas in stem 'negosasyon' | 32 |
 | pumapalaot | n-gram: rare trigram(s) lao, aot in stem 'palaot' | 34 |
 | eksperto | n-gram: rare trigram(s) _ek, eks, ksp, spe, per, ert, rto in stem 'eksperto' | 35 |
@@ -106,5 +104,9 @@ TP = 88, FN = 12, FP = 0 in the test sentences, plus 51 false alarm(s) in 40 cle
 | Incorrect | Intended | Suggestions |
 |---|---|---|
 | bahaay | bahay | baha ay |
+| psahero | pasahero | psa hero |
+| tanwin | tanawin | tan win |
 | Meron | Mayroon | Mayon, Pero |
+| salanat | salamat | sala nat |
+| sinogang | sinigang | sino gang |
 | aklatam | aklatan | aklat am |

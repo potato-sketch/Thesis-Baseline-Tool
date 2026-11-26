@@ -33,16 +33,30 @@ UD_INCLUDE_PROPER_NOUNS = True
 #   "seed" -- the hand-written lists in data/ (+ generated inflections)
 #   "ud"   -- only the UD treebank(s) in data/ud/
 #   "both" -- the union of the two
-# The English list (code-switching) and data/extra/ are used in every mode.
+# data/extra/ is used in every mode.
 LEXICONS = ("seed", "ud", "both")
 LEXICON = "both"
+
+# English treebanks (UD_English-EWT): every data/ud_english/*.conllu becomes
+# the list below (see spellchecker/ud.py).
+UD_ENGLISH_DIR = DATA_DIR / "ud_english"
+UD_ENGLISH_WORDS = UD_ENGLISH_DIR / "english_ud_words.txt"    # generated
+UD_ENGLISH_INCLUDE_PROPER_NOUNS = False
+UD_ENGLISH_MIN_COUNT = 1   # keep words seen at least this often in the treebank
+
+# Which English word list (code-switching: magtext, nag-research) is used:
+#   "seed" -- data/english_words.txt
+#   "ud"   -- only the English UD treebank(s) in data/ud_english/
+#   "both" -- the union of the two
+ENGLISH_LEXICONS = ("seed", "ud", "both")
+ENGLISH_LEXICON = "ud"
 
 TEST_SET = DATA_DIR / "test_sentences.tsv"
 CLEAN_SET = DATA_DIR / "clean_sentences.txt"   # held-out error-free sentences
 
 
-def model_path(lexicon: str) -> Path:
-    return MODEL_DIR / f"model-{lexicon}.json"
+def model_path(lexicon: str, english: str | None = None) -> Path:
+    return MODEL_DIR / f"model-{lexicon}-en_{english or ENGLISH_LEXICON}.json"
 
 # --- Modeling module ----------------------------------------------------------
 NGRAM_SIZE = 3          # character trigrams

@@ -21,7 +21,7 @@ from . import config
 def _checker(args):
     from .checker import SpellChecker
     from .modeling import load_or_train
-    model = load_or_train(args.lexicon, verbose=True)
+    model = load_or_train(args.lexicon, verbose=True, english=args.english)
     return SpellChecker(model, threshold=args.threshold,
                         use_extensions=False if args.paper_only else None,
                         skip_proper_nouns=getattr(args, "skip_proper_nouns", False))
@@ -48,15 +48,21 @@ def cmd_check(args) -> int:
 
 def cmd_train(args) -> int:
     from .modeling import ensure_inflections, load_or_train
-    from .ud import ensure_ud_lists, treebank_files
+    from .ud import (english_treebank_files, ensure_english_ud_list, ensure_ud_lists,
+                     treebank_files)
     lexicons = config.LEXICONS if args.lexicon == "all" else [args.lexicon or config.LEXICON]
+    englishes = config.ENGLISH_LEXICONS if args.english == "all" \
+        else [args.english or config.ENGLISH_LEXICON]
     if any(lx in ("seed", "both") for lx in lexicons):
         ensure_inflections(force=True)
     if any(lx in ("ud", "both") for lx in lexicons) and treebank_files():
         ensure_ud_lists(force=True)
+    if any(en in ("ud", "both") for en in englishes) and english_treebank_files():
+        ensure_english_ud_list(force=True)
     for lexicon in lexicons:
-        model = load_or_train(lexicon, force=True, verbose=True)
-        print("Done.", {k: v for k, v in model.info.items() if k != "sources"}, "\n")
+        for english in englishes:
+            model = load_or_train(lexicon, force=True, verbose=True, english=english)
+            print("Done.", {k: v for k, v in model.info.items() if k != "sources"}, "\n")
     return 0
 
 
@@ -77,8 +83,10 @@ def cmd_evaluate(args) -> int:
     checker = _checker(args)
     items = load_test_set(Path(args.test))
     ev = evaluate(checker, items, _clean(args))
-    lexicon = checker.model.info.get("lexicon", "?")
-    report = format_report(ev, f"Evaluation of the Filipino spell checker ({lexicon} word list)")
+    info = checker.model.info
+    report = format_report(ev, f"Evaluation of the Filipino spell checker "
+                               f"(Tagalog: {info.get('lexicon', '?')} word list, "
+                               f"English: {info.get('english_lexicon', '?')} word list)")
     if args.report:
         out = Path(args.report)
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -92,7 +100,7 @@ def cmd_evaluate(args) -> int:
 def cmd_tune(args) -> int:
     from .evaluation import load_test_set, tune
     from .modeling import load_or_train
-    model = load_or_train(args.lexicon, verbose=True)
+    model = load_or_train(args.lexicon, verbose=True, english=args.english)
     items = load_test_set(Path(args.test))
     thresholds = [float(t) for t in args.thresholds.split(",")]
     clean = _clean(args)
@@ -116,7 +124,7 @@ def cmd_tune(args) -> int:
 def cmd_stem(args) -> int:
     from .detection import ErrorDetector
     from .modeling import load_or_train
-    detector = ErrorDetector(load_or_train(args.lexicon, verbose=True))
+    detector = ErrorDetector(load_or_train(args.lexicon, verbose=True, english=args.english))
     for word in args.words:
         w = word.lower()
         print(f"{word:<20} dictionary stems: {', '.join(detector.stems(w)[:5]) or '-':<30} "
@@ -140,7 +148,7 @@ def cmd_phonetic(args) -> int:
 
 def cmd_gui(args) -> int:
     from .gui import main as gui_main
-    gui_main(args.lexicon)
+    gui_main(args.lexicon, args.english)
     return 0
 
 
@@ -153,6 +161,10 @@ def build_parser() -> argparse.ArgumentParser:
         sp.add_argument("--lexicon", choices=[*config.LEXICONS, *extra], default=None,
                         help=f"Tagalog word list: seed, ud (treebanks in data/ud/) or both "
                              f"(default {config.LEXICON})")
+        sp.add_argument("--english", choices=[*config.ENGLISH_LEXICONS, *extra], default=None,
+                        help=f"English word list: seed (data/english_words.txt), ud "
+                             f"(treebanks in data/ud_english/) or both "
+                             f"(default {config.ENGLISH_LEXICON})")
 
     def detection_options(sp):
         lexicon_option(sp)
