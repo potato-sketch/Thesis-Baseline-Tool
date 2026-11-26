@@ -173,6 +173,20 @@ def is_prefix_form(token: str, root: str | None = None) -> bool:
     return False
 
 
+def is_prefix_before_root(token: str, root: str) -> bool:
+    """Stricter is_prefix_form for a known root: the reduplicated syllable
+    must copy the root's first letters ('nagte' + text, 'nagu' + update),
+    so 'maa' + gang is not one."""
+    if token in PREFIX_SET:
+        return True
+    for p in PREFIXES:
+        syl = token[len(p):]
+        if (token.startswith(p) and syl and len(syl) <= 3 and is_vowel(syl[-1])
+                and sum(map(is_vowel, syl)) == 1 and root.startswith(syl)):
+            return True
+    return False
+
+
 # --------------------------------------------------------------------------
 # Inflection generator (used by the modeling module to enlarge the lexicon)
 # --------------------------------------------------------------------------

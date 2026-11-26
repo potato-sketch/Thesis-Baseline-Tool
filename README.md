@@ -7,7 +7,7 @@ A working Python implementation of the system in
 
 It detects and corrects typographical errors in Filipino text, including inflected forms
 (*isinasama, isasama, isinama* ← *sama*), borrowing and code-switching
-(*magtext, nag-text, mag-research*), and ranks suggestions with a Filipino variant of the
+(*nag-text, mag-research*; the solid *magtext* is corrected to *mag-text*), and ranks suggestions with a Filipino variant of the
 metaphone algorithm. Pure Python standard library — nothing to install.
 
 ## Run it in VS Code
@@ -26,7 +26,7 @@ metaphone algorithm. Pure Python standard library — nothing to install.
 | Evaluate, paper-only pipeline | Same, with this project's extensions switched off |
 | Evaluate with UD Ugnayan only | Same, with the treebank as the only Tagalog word list → `results/evaluation_ud.md` |
 | Tune n-gram threshold | The threshold experiment of Section II-B |
-| Unit tests | 33 tests, including every example given in the paper |
+| Unit tests | 37 tests, including every example given in the paper |
 
 The tests also appear in the **Testing** view (beaker icon). The same commands work in the terminal:
 
@@ -149,7 +149,7 @@ evaluate on out of the word list.
 
 ## English word list: UD English-EWT
 
-The English automaton (code-switching: *magtext, nag-research*) is built from
+The English automaton (code-switching: *nag-text, mag-research*) is built from
 [UD_English-EWT](https://github.com/UniversalDependencies/UD_English-EWT) (CC BY-SA 4.0;
 its README and license are in [data/ud_english/](data/ud_english/)): 16,622 sentences and
 254,820 words of blogs, reviews, e-mail and web text. Every `*.conllu` file in that folder
@@ -227,6 +227,18 @@ treebanks in `data/ud/`, and retrain.
    look-up", which in its detection module means both word lists. Paper-only mode uses
    both, so *aklatam* gets "aklat am" (*am* is English) and, since space-dash found
    something, no edit-distance candidates.
+9. *English root set off with a hyphen.* Filipino orthography (KWF, *Ortograpiyang
+   Pambansa*) writes an English word that keeps its English spelling apart from a Tagalog
+   affix: *i-check, nag-text, ma-save*. A solid form such as *nagreply*, *ipost* or
+   *nagtetext* is flagged (`english-hyphen`) and corrected to *nag-reply*, *i-post*,
+   *nagte-text*. The merge test does the same for a prefix written apart: *nag binge* →
+   *nag-binge* instead of *nagbinge*. A root counts as English when it is in the English
+   word list and not in the Tagalog one. For the merge test, a word in neither list also
+   counts when its trigrams are rare in Tagalog (*binge*). A word with a Tagalog analysis
+   is never hyphenated, and neither are the assimilated nasal prefixes *pan-, man-, pam-*
+   (so *manpower* is not *man-power*). Infixed forms (*tinry, chineck*) are left as they
+   are. The paper accepts both *magtext* and *nag-text*; in paper-only mode *magtext* is
+   still accepted and *nag binge* still merges to *nagbinge*.
 
 With the extensions off, every step the paper describes runs exactly as written. Only the
 details the paper leaves open (below) are shared by both modes.

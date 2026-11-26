@@ -81,6 +81,8 @@ NGRAM_THRESHOLD = 0.20
 #     known; English roots under Tagalog affixes need MIN_ENGLISH_STEM_LENGTH
 #     letters; the code-switching check accepts a prefix + reduplicated
 #     syllable (nagte-text); the compound check rejects function words;
+#   * detection + correction: an English root under a Tagalog prefix takes a
+#     hyphen (nagreply -> nag-reply; merge test: nag binge -> nag-binge);
 #   * correction: the dash test (magka-ugnay -> magkaugnay, nagaral ->
 #     nag-aral); edit-distance candidates are listed after the space-dash
 #     suggestions instead of only when space-dash finds nothing; the split

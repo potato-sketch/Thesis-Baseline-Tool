@@ -23,8 +23,24 @@ class DetectionTest(unittest.TestCase):
         self.assertEqual(self.flagged("Isinasama niya ako. Isasama niya ako. Isinama niya ako."), [])
 
     def test_code_switching_is_correct(self):
-        # magtext, nag-text (base form text), mag-research
-        self.assertEqual(self.flagged("Magtext ka. Nag-text siya. Mag-research tayo."), [])
+        # nag-text (base form text), mag-research, nagte-text, i-submit
+        self.assertEqual(self.flagged(
+            "Mag-text ka. Nag-text siya. Mag-research tayo. Nagte-text siya. I-submit mo."), [])
+
+    def test_english_root_needs_hyphen(self):
+        # extension: an English root under a Tagalog prefix is set off with a hyphen
+        flags = {f.word: f for f in self.sc.check("Magtext ka. Nagreply siya at nagtetext pa.")}
+        self.assertEqual(set(flags), {"Magtext", "Nagreply", "nagtetext"})
+        self.assertEqual(flags["Magtext"].method, "english-hyphen")
+        self.assertEqual(flags["Magtext"].suggestions[0].text, "Mag-text")
+        self.assertEqual(flags["Nagreply"].suggestions[0].text, "Nag-reply")
+        self.assertEqual(flags["nagtetext"].suggestions[0].text, "nagte-text")
+
+    def test_tagalog_words_take_no_hyphen(self):
+        det = self.sc.detector
+        for word in ["maganda", "nagluto", "isinasama", "magkasama"]:
+            self.assertEqual(det.hyphenations(word), [], word)
+        self.assertEqual(det.hyphenations("manpower"), [])     # man- is an assimilated prefix
 
     def test_non_word_errors(self):
         self.assertEqual(self.flagged("Ang bulaklak ay mganda."), ["mganda"])
@@ -48,6 +64,13 @@ class CorrectionTest(unittest.TestCase):
         # mag- + kasama -> magkasama ; mag- + asawa -> mag-asawa
         self.assertEqual(self.suggestions("Sila ay mag kasama.", "mag")[0], "magkasama")
         self.assertEqual(self.suggestions("Sila ay mag asawa.", "mag")[0], "mag-asawa")
+
+    def test_merge_test_english_root(self):
+        # extension: the English root stays apart with a hyphen
+        self.assertEqual(self.suggestions("Mag update ka.", "Mag")[0], "Mag-update")
+        self.assertEqual(self.suggestions("Nag text siya.", "Nag")[0], "Nag-text")
+        # 'binge' is in neither word list; its trigrams are rare in Tagalog
+        self.assertEqual(self.suggestions("Nag binge watch kami.", "Nag")[0], "Nag-binge")
 
     def test_split_test(self):
         # palang -> (pa, lang) ... ; parin -> pa rin
@@ -90,6 +113,11 @@ class PaperOnlyModeTest(unittest.TestCase):
         flagged = [f.word for f in self.sc.check(
             "Isinasama niya ako. Magtext ka. Nag-text siya. Mag-research tayo. Araw-araw.")]
         self.assertEqual(flagged, [])
+
+    def test_no_english_root_hyphen(self):
+        # The paper merges by the Tagalog prefix rules only: nag + binge -> nagbinge.
+        self.assertEqual(self.sc.corrector.merge_test("nag", "binge")[0].text, "nagbinge")
+        self.assertFalse(self.sc.detect("nagreply").is_error)
 
     def test_hyphen_checks_follow_the_paper(self):
         det = self.sc.detector

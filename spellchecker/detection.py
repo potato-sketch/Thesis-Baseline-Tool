@@ -16,6 +16,8 @@ of them described in the paper:
   * bound prefix: a prefix written as a separate word ("pag bigay");
   * clitic split: a function word fused with its neighbour ("parin" = pa rin);
   * contractions: "ako'y", "ganito't" accepted when the bare word is known;
+  * English-root hyphen: an English word under a Tagalog prefix is set off
+    with a hyphen (KWF orthography), so "nagreply" is flagged -> nag-reply;
   * stricter checks on steps the paper does describe -- an English root
     under Tagalog affixes needs >= MIN_ENGLISH_STEM_LENGTH letters, the
     code-switching check also accepts a prefix plus a reduplicated syllable
@@ -28,7 +30,8 @@ from dataclasses import dataclass
 
 from . import config
 from .modeling import LanguageModel
-from .morphology import PREFIX_SET, is_prefix_form
+from .morphology import (ASSIMILATE_M, ASSIMILATE_N, PREFIX_SET, is_prefix_before_root,
+                         is_prefix_form)
 from .stemmer import Stemmer
 from .tokenizer import normalize
 
@@ -72,6 +75,46 @@ class ErrorDetector:
         w = normalize(word)
         return self.in_dictionary(w) or bool(self.stems(w))
 
+    # -- English roots under Tagalog prefixes (extension) -------------------
+    # Filipino orthography (KWF, Ortograpiyang Pambansa) sets an English word
+    # that keeps its English spelling apart from a Tagalog affix with a hyphen:
+    # i-check, nag-text, nagte-text, ma-save.
+    def root_language(self, word: str) -> str | None:
+        """'tagalog' (directly or via a Tagalog stem), 'english', or None for a
+        word in neither word list."""
+        w = normalize(word)
+        tl = self.model.tagalog
+        if w in tl or w in self.model.function_words:
+            return "tagalog"
+        if w in self.model.english:
+            return "english"
+        if any(s in tl for s in self.stems(w)):
+            return "tagalog"
+        return None
+
+    def looks_foreign(self, word: str) -> bool:
+        """The Tagalog trigram profile finds the word rare ('binge': 'nge', 'ge_')."""
+        return bool(self.model.ngrams.missing(normalize(word), self.threshold))
+
+    def hyphenations(self, word: str) -> list[str]:
+        """Hyphenated spellings of a solid word made of a Tagalog prefix (with
+        an optional reduplicated syllable) and an English root, longest root
+        first: nagreply -> nag-reply, ipost -> i-post, nagtetext -> nagte-text.
+        Assimilated nasal prefixes (pan-, man-, pam- ...) are skipped: they only
+        arise before a Tagalog root, so 'pancake' is not pan- + cake."""
+        w = normalize(word)
+        if "-" in w:
+            return []
+        out = []
+        for k in range(1, len(w) - config.MIN_ENGLISH_STEM_LENGTH + 1):
+            a, b = w[:k], w[k:]
+            if a in ASSIMILATE_M or a in ASSIMILATE_N:
+                continue
+            if (is_prefix_before_root(a, b) and b in self.model.english
+                    and b not in self.model.tagalog):
+                out.append(f"{a}-{b}")
+        return out
+
     # -- the detection pipeline -------------------------------------------
     def check(self, word: str) -> Detection:
         w = normalize(word)
@@ -97,6 +140,15 @@ class ErrorDetector:
 
         # 1b. dictionary look-up after stemming
         stems = self.stems(w)
+        # extension: an English root fused to a Tagalog prefix needs a hyphen
+        # ("nagreply" -> nag-reply), unless the word also has a Tagalog analysis
+        if self.use_extensions and not any(s in tl for s in stems):
+            fixes = self.hyphenations(w)
+            if fixes:
+                root = fixes[0].split("-", 1)[1]
+                return Detection(word, True, "english-hyphen",
+                                 f'the English word "{root}" takes a hyphen after a '
+                                 f'Tagalog prefix: {fixes[0]}', root)
         if stems:
             return Detection(word, False, "stemmed-dictionary", f"stem: {stems[0]}", stems[0])
 

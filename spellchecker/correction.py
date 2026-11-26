@@ -7,7 +7,10 @@
    * split test -- every split with >= 2 letters per part whose parts are
      both in the dictionary (palang -> pa lang, pal ang, pala ng);
    * dash test (extension, not in the paper) -- drop an illegal hyphen
-     (magka-ugnay -> magkaugnay) or add a required one (nagaral -> nag-aral).
+     (magka-ugnay -> magkaugnay) or add a required one (nagaral -> nag-aral);
+   * English-root hyphen (extension) -- an English word keeps a hyphen after
+     a Tagalog prefix: nagreply -> nag-reply, and the merge test joins
+     "nag binge" as nag-binge.
 2. Edit distance -- only if step 1 produced nothing: Levenshtein automaton
    (<= 2 edits) traversed in parallel with the Tagalog DAFSA.
 3. Ranking -- Dice coefficient between the Filipino-metaphone codes of the
@@ -62,8 +65,9 @@ class ErrorCorrector:
 
     # ---------------------------------------------------- space-dash correction
     def space_dash(self, w: str, next_word: str | None = None) -> list[Suggestion]:
-        found = self.merge_test(w, next_word) or self.split_test(w)
-        if not found and self.detector.use_extensions:
+        ext = self.detector.use_extensions
+        found = self.merge_test(w, next_word) or (ext and self.hyphen_test(w)) or self.split_test(w)
+        if not found and ext:
             found = self.dash_test(w)
         return found
 
@@ -75,7 +79,23 @@ class ErrorCorrector:
         if not any(ch.isalpha() for ch in nxt):
             return []
         merged = attach_prefix(prefix, nxt)
-        return [Suggestion(merged, "merge", span=2)]
+        texts = [merged]
+        hyphenated = f"{prefix}-{nxt}"
+        if self.detector.use_extensions and hyphenated != merged:
+            # extension: an English root keeps its hyphen (nag + update -> nag-update).
+            # A root in neither list gets both spellings, the likelier one first
+            # (nag + binge -> nag-binge, nagbinge).
+            lang = self.detector.root_language(nxt)
+            if lang == "english":
+                texts = [hyphenated]
+            elif lang is None:
+                foreign = self.detector.looks_foreign(nxt)
+                texts = [hyphenated, merged] if foreign else [merged, hyphenated]
+        return [Suggestion(t, "merge", span=2) for t in texts]
+
+    def hyphen_test(self, w: str) -> list[Suggestion]:
+        """Extension: nagreply -> nag-reply (English root after a Tagalog prefix)."""
+        return [Suggestion(h, "dash") for h in self.detector.hyphenations(w)]
 
     def split_test(self, w: str) -> list[Suggestion]:
         if self.detector.use_extensions:
