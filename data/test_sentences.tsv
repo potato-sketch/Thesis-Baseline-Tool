@@ -1,0 +1,108 @@
+# 100 test sentences, one typographical error each, with the same error-type
+# distribution as Table I of the paper (8 insertion, 28 deletion, 37 substitution,
+# 9 space deletion, 12 hyphen insertion, 6 space insertion).  The paper's own
+# sentences (from students' English-to-Filipino translation exercises) were not
+# published, so these were written for this replication; the six example pairs
+# of Table I are included.
+# Columns (tab-separated): sentence, incorrect text, intended correction, error type
+sentence	incorrect	correct	type
+Hindi siya pumasok sa paaralan pagka't siya ay may sakit.	pagka't	pagkat	insertion
+Ang aming bahaay ay malapit sa simbahan.	bahaay	bahay	insertion
+Masayang naglalarro ang mga bata sa bakuran.	naglalarro	naglalaro	insertion
+Bumili ang nanay ng isdaa sa palengke kaninang umaga.	isdaa	isda	insertion
+Ang kaibigaan ko ay nag-aaral ng medisina.	kaibigaan	kaibigan	insertion
+Mabilis tumakbbo ang kabayo sa bukid.	tumakbbo	tumakbo	insertion
+Sinulat ng estudyante ang kanyang sanaysayy tungkol sa kalikasan.	sanaysayy	sanaysay	insertion
+Ang guro ay nagtuturro ng matematika sa ikatlong baitang.	nagtuturro	nagtuturo	insertion
+Tnago ng bata ang laruan sa ilalim ng kama.	Tnago	Itinago	deletion
+Ang mga bulaklak sa hardin ay mganda.	mganda	maganda	deletion
+Pumnta kami sa bahay ng aming lola noong Linggo.	Pumnta	Pumunta	deletion
+Ang estudynte ay nagbasa ng aklat sa aklatan.	estudynte	estudyante	deletion
+Uminom siya ng tubg dahil siya ay nauuhaw.	tubg	tubig	deletion
+Maraming salamat sa iyong tlong kahapon.	tlong	tulong	deletion
+Nagluto ang tatay ng adobo para sa hpunan.	hpunan	hapunan	deletion
+Ang paralan namin ay malaki at malinis.	paralan	paaralan	deletion
+Kumain kami ng masarap na pgkain sa handaan.	pgkain	pagkain	deletion
+Ang aming bhay ay may dalawang palapag.	bhay	bahay	deletion
+Si lola ay nagkuwento ng isang alamt tungkol sa buwan.	alamt	alamat	deletion
+Ang mga magsasaka ay nagtanim ng gulay sa bkid.	bkid	bukid	deletion
+Mahalaga ang edkasyon para sa kinabukasan ng kabataan.	edkasyon	edukasyon	deletion
+Nagpunta ang pamlya namin sa dagat noong bakasyon.	pamlya	pamilya	deletion
+Ang kapatid ko ay nagtatrbaho sa isang call center sa lungsod.	nagtatrbaho	nagtatrabaho	deletion
+Hindi ko maintindhan ang aralin sa agham.	maintindhan	maintindihan	deletion
+Ang mga bata ay naglalaro ng bla sa parke.	bla	bola	deletion
+Ang ating bnsa ay mayaman sa likas na yaman.	bnsa	bansa	deletion
+Nagsimula na ang klse sa ganap na ikapito ng umaga.	klse	klase	deletion
+Sumulat ako ng lham para sa aking ina.	lham	liham	deletion
+Ang dyip ay puno ng mga psahero.	psahero	pasahero	deletion
+Masarap ang mangga na binli ni nanay.	binli	binili	deletion
+Nakita namin ang magandang tanwin sa bundok.	tanwin	tanawin	deletion
+Ang mga ibon ay lumilipd sa himpapawid.	lumilipd	lumilipad	deletion
+Hindi siya nakapnta sa pulong dahil sa malakas na ulan.	nakapnta	nakapunta	deletion
+Ang aking kpatid ay mahilig magbasa ng nobela.	kpatid	kapatid	deletion
+Kailangan nating alagaan ang ating kalikasn.	kalikasn	kalikasan	deletion
+Nagdala ang mga bisita ng maraming pasalbong.	pasalbong	pasalubong	deletion
+Meron kaming bagong kotse.	Meron	Mayroon	substitution
+Ang mga bulaklak sa parke ay magamda.	magamda	maganda	substitution
+Kumaim kami ng hapunan sa bahay ni lola.	Kumaim	Kumain	substitution
+Bakot hindi ka pumasok kahapon?	Bakot	Bakit	substitution
+Ang tibig sa ilog ay malinis at malamig.	tibig	tubig	substitution
+Nag-research ang estudyante gamit ang lumang aklar.	aklar	aklat	substitution
+Ang aking pamikya ay nakatira sa probinsiya.	pamikya	pamilya	substitution
+Masaua ang mga bata habang naglalaro sa ulan.	Masaua	Masaya	substitution
+Maraming salanat sa inyong tulong.	salanat	salamat	substitution
+Ang guro ay nagbigay ng mahabang pagsusulot.	pagsusulot	pagsusulit	substitution
+Pumunta ang nanay sa palengje upang bumili ng gulay.	palengje	palengke	substitution
+Ang kanyang kaigigan ay mabait at matulungin.	kaigigan	kaibigan	substitution
+Ang langit ay kulay asil ngayong hapon.	asil	asul	substitution
+Kailangan nating mag-aral nang mabute.	mabute	mabuti	substitution
+Maraming matataas na gusako sa lungsod.	gusako	gusali	substitution
+Nakatulog ang sanggol sa duyab.	duyab	duyan	substitution
+Ang presyo ng bigas ay tumaas ngayong taok.	taok	taon	substitution
+Naglakad kami papunta sa simbahab.	simbahab	simbahan	substitution
+Ang mga isda ay lumalanhoy sa malinaw na tubig.	lumalanhoy	lumalangoy	substitution
+Nagluto si ate ng masarap na sinogang.	sinogang	sinigang	substitution
+Ang bata ay umiiyal dahil nawala ang kanyang laruan.	umiiyal	umiiyak	substitution
+Gusto kong mabasa ang bagong nobela ng manunulag.	manunulag	manunulat	substitution
+Ang mga magulang ay dapat igalang ng mga anaj.	anaj	anak	substitution
+Ang aming paaralan ay may malaking aklatam.	aklatam	aklatan	substitution
+Nagtext ang aking tito kagabu.	kagabu	kagabi	substitution
+Ang mga sundalo ay nagbabantay sa hamgganan.	hamgganan	hangganan	substitution
+Malakas ang hamgin sa tabing-dagat.	hamgin	hangin	substitution
+Bumili ako ng bagong sapatod para sa pasukan.	sapatod	sapatos	substitution
+Siya ay nagtatrabaho bilang inhinyeto sa isang kompanya.	inhinyeto	inhinyero	substitution
+Ang kalabay ay tumutulong sa magsasaka.	kalabay	kalabaw	substitution
+Masakit ang aking ngupin kaya pumunta ako sa dentista.	ngupin	ngipin	substitution
+Ang mga dahom ng puno ay nalalagas.	dahom	dahon	substitution
+Ang aming klase ay may pagsisulit bukas.	pagsisulit	pagsusulit	substitution
+Sumakay kami ng bangla papunta sa isla.	bangla	bangka	substitution
+Ang kanyang lolo ay isang matapang na bayabi.	bayabi	bayani	substitution
+Hindi ako makatulog dahil sa ingay ng kapitbahat.	kapitbahat	kapitbahay	substitution
+Ang panahon ngayon ay napakainot.	napakainot	napakainit	substitution
+Nag-text ako sa kanya pero hindi parin siya sumasagot.	parin	pa rin	space deletion
+Kumain kana ba ng tanghalian?	kana	ka na	space deletion
+Ngayon palang ako natutong lumangoy.	palang	pa lang	space deletion
+Bukas nalang tayo maglaro sa parke.	nalang	na lang	space deletion
+Umuulan nanaman sa aming lugar.	nanaman	na naman	space deletion
+Hindipa tapos ang aming project.	Hindipa	Hindi pa	space deletion
+Walapa akong natatanggap na sulat mula sa kanya.	Walapa	Wala pa	space deletion
+Kayapala hindi siya pumasok kanina.	Kayapala	Kaya pala	space deletion
+Pagod narin ang mga manggagawa.	narin	na rin	space deletion
+Ang dalawang bansa ay magka-ugnay sa kasaysayan.	magka-ugnay	magkaugnay	hyphen insertion
+Masarap ang pag-kain sa handaan kagabi.	pag-kain	pagkain	hyphen insertion
+Nag-luto ang nanay ng sinigang para sa amin.	Nag-luto	Nagluto	hyphen insertion
+Gusto ng mga bata na mag-laro sa labas.	mag-laro	maglaro	hyphen insertion
+Nag-lakad kami papunta sa paaralan.	Nag-lakad	Naglakad	hyphen insertion
+Ang aking ka-ibigan ay nakatira sa probinsiya.	ka-ibigan	kaibigan	hyphen insertion
+Mahilig siyang mag-basa ng mga aklat.	mag-basa	magbasa	hyphen insertion
+Ang mga turista ay naka-upo sa tabi ng dagat.	naka-upo	nakaupo	hyphen insertion
+Napaka-ganda ng tanawin sa bundok.	Napaka-ganda	Napakaganda	hyphen insertion
+Nag-trabaho siya sa ibang bansa nang sampung taon.	Nag-trabaho	Nagtrabaho	hyphen insertion
+Ang pag-tulog nang maaga ay mabuti sa kalusugan.	pag-tulog	pagtulog	hyphen insertion
+Mag-sulat kayo ng maikling sanaysay.	Mag-sulat	Magsulat	hyphen insertion
+Ang pag bigay ng tulong ay mahalaga.	pag bigay	pagbigay	space insertion
+Gusto kong mag luto ng adobo mamaya.	mag luto	magluto	space insertion
+Nag aral kami nang mabuti para sa pagsusulit.	Nag aral	Nag-aral	space insertion
+Sila ay magka sama sa proyekto.	magka sama	magkasama	space insertion
+Ang mga bagay na pinag usapan namin ay mahalaga.	pinag usapan	pinag-usapan	space insertion
+Nag lalaro ang mga bata sa bakuran.	Nag lalaro	Naglalaro	space insertion

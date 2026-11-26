@@ -1,0 +1,2 @@
+# No third-party packages are needed: the project uses only the Python 3.10+
+# standard library (Tkinter for the desktop app, unittest for the tests).

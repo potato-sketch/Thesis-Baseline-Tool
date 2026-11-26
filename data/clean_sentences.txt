@@ -1,0 +1,45 @@
+# Held-out ERROR-FREE sentences (one per line).  Their vocabulary was NOT added
+# to the word lists, so every flag raised on them is a false positive caused by
+# out-of-vocabulary words -- the situation the paper describes for technical
+# terms such as 'tannins' and 'plesiomorphic'.  Keep it that way: do not add
+# these words to the lexicon, or the measurement stops being fair.
+Ang pagbabago ng klima ay isa sa pinakamalaking hamon na kinakaharap ng ating henerasyon.
+Nagsagawa ang mga mananaliksik ng malawakang pag-aaral tungkol sa epekto ng plastik sa karagatan.
+Ipinagdiriwang ng mga Pilipino ang Araw ng Kalayaan tuwing ikalabindalawa ng Hunyo.
+Maraming estudyante ang nahihirapang magbayad ng matrikula dahil sa pagtaas ng presyo ng mga bilihin.
+Kinakailangan ng bawat mamamayan na sumunod sa mga alituntunin ng pamahalaang lokal.
+Ang mga halaman ay gumagawa ng sariling pagkain sa pamamagitan ng photosynthesis.
+Nagtipon-tipon ang mga magsasaka upang pag-usapan ang problema sa irigasyon.
+Pinuri ng punong-guro ang mga mag-aaral na nagwagi sa paligsahan sa pagsulat ng sanaysay.
+Lumikas ang mga residente sa mas mataas na lugar nang lumakas ang bagyo.
+Sinasabi ng mga eksperto na mahalaga ang sapat na tulog sa kalusugan ng isip.
+Ang tanghalian namin kanina ay sinigang na hipon at pritong isda.
+Nagpadala ng tulong ang iba't ibang organisasyon sa mga nasalanta ng lindol.
+Hinihikayat ng paaralan ang mga magulang na makilahok sa mga gawain ng kanilang mga anak.
+Natuklasan ng mga siyentipiko ang isang bagong uri ng palaka sa kagubatan ng Palawan.
+Ang wikang Filipino ay patuloy na umuunlad dahil sa paghiram ng mga salita mula sa ibang wika.
+Sa panahon ng tag-ulan, madalas bumaha sa mabababang bahagi ng lungsod.
+Nag-download ako ng bagong app para matuto ng ibang wika.
+Pinaghandaan ng koponan ang laban nila sa kampeonato nang ilang buwan.
+Tumutulong ang mga boluntaryo sa paglilinis ng dalampasigan tuwing Sabado.
+Napansin ng guro na hindi nakikinig ang ilang estudyante habang nagtuturo siya.
+Ang pagbasa ng mga aklat ay nakatutulong sa pagpapalawak ng bokabularyo.
+Ipinaliwanag ng doktor ang mga sintomas ng dengue at kung paano ito maiiwasan.
+Nagbukas ang isang bagong silid-aklatan sa aming barangay noong nakaraang buwan.
+Kailangang magsuot ng helmet ang mga nagmamaneho ng motorsiklo.
+Ang mga kabataan ngayon ay mahilig mag-post ng mga larawan sa social media.
+Nagluluksa ang buong bayan sa pagpanaw ng kanilang minamahal na alkalde.
+Sumikat ang araw sa likod ng mga bundok habang naglalakad kami pauwi.
+Mas pinipili ng ilang mamimili ang mga produktong gawa sa sariling bansa.
+Binigyang-diin ng tagapagsalita ang kahalagahan ng edukasyon sa pag-unlad ng bansa.
+Inaasahang darating ang mga panauhin bago magtanghali.
+Ang aming lola ay mahusay magluto ng mga kakaning tulad ng bibingka at puto.
+Nagkasundo ang dalawang panig na ipagpatuloy ang negosasyon sa susunod na linggo.
+Hindi dapat itapon kung saan-saan ang mga basurang plastik.
+Ang mga mangingisda ay maagang pumapalaot upang makahuli ng maraming isda.
+Pinag-aaralan pa ng mga eksperto kung ligtas ang bagong bakuna.
+Nagtanong ang bata kung bakit asul ang kulay ng langit.
+Isinulat ni Jose Rizal ang Noli Me Tangere upang ilantad ang pang-aabuso ng mga prayle.
+Masayang nagkuwentuhan ang magkakaibigan habang umiinom ng kape.
+Bumuo ang klase ng mga pangkat para sa kanilang proyekto sa agham.
+Ang pag-iipon ng pera ay isang mabuting gawi na dapat simulan habang bata pa.

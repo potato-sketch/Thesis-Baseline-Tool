@@ -1,0 +1,86 @@
+{
+  // Run and Debug panel (Ctrl+Shift+D): pick a configuration and press F5.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Spell checker app (GUI)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "spellchecker",
+      "args": ["gui"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Check a sentence",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "spellchecker",
+      "args": ["check", "${input:sentence}"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Train model (modeling module)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "spellchecker",
+      "args": ["train", "--lexicon", "all"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Evaluate (100 test sentences)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "spellchecker",
+      "args": ["evaluate", "--report", "results/evaluation.md"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Evaluate, paper-only pipeline",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "spellchecker",
+      "args": ["evaluate", "--paper-only", "--report", "results/evaluation_paper_only.md"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Evaluate with UD Ugnayan only",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "spellchecker",
+      "args": ["evaluate", "--lexicon", "ud", "--report", "results/evaluation_ud.md"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Tune n-gram threshold",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "spellchecker",
+      "args": ["tune"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Unit tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "unittest",
+      "args": ["discover", "-s", "tests", "-t", ".", "-v"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "sentence",
+      "type": "promptString",
+      "description": "Filipino text to check",
+      "default": "Hindi parin siya pumasok dahil mganda ang panahon at gusto niyang mag laro."
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+# Tagalog roots and the affixation paradigms they take.  The modeling module
+# expands every line into its inflected forms (data/tagalog_inflections.txt).
+#
+# root      classes                 [suffix stem]
+#
+# classes:  um    kumain kumakain kakain           mag   magluto nagluto nagluluto pagluluto
+#           ma    matulog natulog natutulog       maka  makakain nakakain nakakakain
+#           in    kainin kinain kinakain kakainin an    puntahan pinuntahan pupuntahan
+#           i     isama isinama isinasama isasama pagan pag-aralan pinag-aralan
+#           adj   maganda magaganda napakaganda pinakamaganda kagandahan
+#
+# A trailing ' marks a glottal-final root: no linking h before -in/-an
+# (luto' -> lutuin, not lutuhin).  The optional suffix stem is used before
+# -in/-an for syncope or sound change (dala -> dalhin, bayad -> bayaran).
+
+# ---- verbs ------------------------------------------------------------------
+kain        um,in,an,maka
+inom        um,in,maka
+luto'       mag,in,i,an
+sulat       um,in,i,an,mag,maka
+basa        mag,in,ma,maka
+aral        mag,in,pagan
+alis        um,in,an,mag
+punta       um,an,mag,maka
+lakad       mag,um,maka
+takbo       um,mag,maka
+tulog       ma,maka
+gising      um,in,ma
+sama        um,i,mag
+bili        um,in,mag,maka      bilh
+dala        mag,in,an           dalh
+gawa        um,in,mag,maka      gaw
+kuha        um,in,an            kun
+bigay       mag,i,an            bigy
+sabi        mag,in,um
+tanong      mag,in,um
+sagot       um,in,mag,an
+turo'       mag,in,i,an
+hanap       mag,in,maka
+kita'       ma,maka
+rinig       ma,maka
+kinig       ma
+nood        ma
+tingin      um,an               tingn
+dating      um
+daan        um
+balik       um,i,an,mag
+pasok       um,i,an,maka
+labas       um,i,an,mag
+uwi'        um,i,an,maka
+upo'        um,an,maka
+tayo'       um,i
+higa'       um,an
+tulong      um,an,mag
+trabaho     mag
+laro'       mag,in,an,um
+kanta       um,in,mag
+sayaw       um,in,mag
+linis       mag,in,an
+hugas       mag,an,in
+laba        mag,an              labh
+walis       mag,in,an
+dasal       mag
+simba       mag
+bayad       mag,an              bayar
+utang       um,an
+hiram       um,in
+bukas       mag,an              buks
+sara        mag,i,an            sarh
+sakay       um,i,an             saky
+baba'       um,i,an
+akyat       um,in
+tawag       um,in,an
+hintay      mag,in
+isip        mag,in
+intindi     in
+unawa'      in
+lipat       um,i,an,mag
+pasyal      um,mag
+bisita      um,in,mag
+kuwento     mag,i
+handa'      mag,i,an
+lagay       mag,i,an            lagy
+tapon       mag,i
+pulot       um,in
+hawak       um,an,mag
+buhat       mag,in
+tulak       um,i
+tahi'       in,mag
+tanim       mag,i,an
+dilig       mag,an
+alaga'      mag,an
+ngiti'      um
+iyak        um,an
+tawa        um
+sigaw       um,an
+usap        mag,pagan
+away        mag,in
+laban       um,an
+buhay       ma,in
+ligo'       ma
+bihis       mag,an
+suot        mag,i,in
+kilala      ma
+hiling      um,in
+utos        mag,an
+sunod       um,in,an            sund
+simula'     mag,an              simul
+tapos       ma,in,mag
+tuloy       um,i
+hinto'      um,i
+tigil       um,i
+pigil       um,an,mag
+subok       um,an,mag
+gamit       um,in,mag
+pili'       um,in
+hati'       in,mag
+dagdag      mag,i,an
+bawas       mag,an
+bilang      um,in,mag
+sukat       um,in
+timbang     um,in
+ayos        mag,in
+sira'       ma,in
+tanggap     um,in,ma,maka
+pirma       um,an
+takot       ma
+galit       ma
+gulat       ma
+pagod       ma
+gutom       ma
+uhaw        ma
+ingat       mag,an
+dalaw       um,in
+tira        um
+lakbay      mag
+lipad       um
+langoy      um
+tawid       um
+maneho      mag
+ligpit      mag,i
+tugtog      um,in
+guhit       um,i
+kulay       an
+pinta       mag,an
+gupit       mag,in
+hiwa'       in
+prito       mag,i
+ihaw        mag,in
+hain        mag,i
+hinga'      um
+ubo'        um
+benta       mag,i
+nakaw       mag,in
+tago'       mag,i,an
+sundo'      um,in
+hatid       mag,i
+sali'       um
+bati        um,in
+paalam      mag
+pahinga     mag
+sulong      um
+urong       um
+angat       um
+lubog       um
+lunod       ma
+sunog       ma
+baha'       um
+ulan        um
+kidlat      um
+lindol      um
+hangin      um
+bantay      mag,an
+galang       um,i
+tuto'       ma
+lagas       ma
+lakas       um
+salita'     mag
+mahal       mag,in
+tanda'      ma,an
+hula'       um,an
+sisi        in,mag
+patawad     mag
+dalo        um
+handog      mag,i
+alok        mag,i,an
+tuklas      ma,in
+
+# ---- adjectives (ma- adjectives; most also take -um- "to become") --------------
+ganda       adj,um
+saya        adj,um              siyah
+laki        adj,um
+liit        adj,um
+bilis       adj,um
+bagal       adj,um
+taas        adj,um
+baba'       adj
+linis       adj
+sarap       adj,um
+pait        adj,um
+tamis       adj,um
+alat        adj,um
+asim        adj,um
+anghang     adj,um
+bigat       adj,um
+gaan        adj,um
+lakas       adj
+hina'       adj,um
+talino      adj,um
+bait        adj,um
+buti        adj,um
+hirap       adj,um
+dali'       adj,um
+layo'       adj,um
+lapit       adj,um
+lalim       adj,um
+babaw       adj,um
+lawak       adj,um
+ingay       adj,um
+dilim       adj,um
+liwanag     adj,um
+yaman       adj,um
+tapang      adj,um
+sipag       adj
+galing      adj,um
+husay       adj,um
+lambot      adj,um
+tigas       adj,um
+sakit       adj
+lungkot     adj,um
+tuwa'       adj
+haba'       adj,um
+ikli'       adj,um
+kapal       adj,um
+nipis       adj,um
+luwag       adj,um
+sikip       adj,um
+bango       adj,um
+baho'       adj,um
+linaw       adj,um
+labo'       adj,um
+tibay       adj,um
+lusog       adj,um
+taba'       adj,um
+ligaya      adj
+payapa'     adj
+tagal       adj,um
+aga         adj,um
+ayos        adj
+gulo        adj,um
+kalat       adj
+init        adj,um
+lamig       adj,um
+sama'       adj
+tanda'      adj,um
+dami        adj,um
+kulit       adj
+halaga      adj
+tapat       adj
+bagsik      adj
+lupit       adj
+bango       adj
+hiya'       adj,um
+tamad       um

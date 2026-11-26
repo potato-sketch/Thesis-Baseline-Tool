@@ -1,0 +1,144 @@
+# Tagalog content words (roots and common derived/irregular forms).
+# Whitespace-separated, '#' starts a comment.  Function words are in
+# tagalog_function_words.txt; regular inflections are generated from
+# tagalog_paradigms.tsv.  Add words freely, then run: python -m spellchecker train
+#
+# This is a small seed lexicon written for the replication; the paper's own
+# word list was not published.  A larger list can be dropped into data/extra/tagalog/.
+
+# ---- people and family
+tao lalaki babae bata matanda sanggol nanay tatay ina ama inay itay magulang anak kapatid kuya ate
+bunso panganay lolo lola tito tita tiyo tiya pinsan pamangkin apo asawa mag-asawa kaibigan kasama
+kaklase kapitbahay guro titser estudyante mag-aaral doktor nars pulis sundalo magsasaka mangingisda
+tindero tindera drayber inhinyero abogado pari madre pangulo presidente alkalde mamamayan bisita
+panauhin amo katulong manggagawa empleyado kawani manunulat mambabasa mananayaw mang-aawit artista
+bayani kabataan matatanda kababayan dayuhan pilipino pilipina filipino tagalog ingles kapwa sarili
+pamilya angkan lahi pangkat grupo samahan kapisanan turista pasahero dentista mag-anak magkakapatid
+binata dalaga lalake kabarkada barkada kasintahan nobyo nobya biyuda ulila sanggol nobela
+
+# ---- body and health
+katawan ulo buhok mukha mata ilong bibig labi ngipin dila tainga tenga leeg balikat braso kamay
+daliri kuko dibdib tiyan likod baywang binti hita tuhod paa puso utak dugo buto balat sikmura baga
+atay kalusugan sakit lagnat ubo sipon gamot lunas ospital pagamutan klinika bitamina ehersisyo
+lakas hininga pawis luha sugat
+
+# ---- home and objects
+bahay tahanan kuwarto kwarto silid kusina sala banyo palikuran pinto pintuan bintana bubong sahig
+dingding pader hagdan bakuran hardin mesa lamesa upuan silya kama unan kumot banig aparador kabinet
+plato pinggan baso tasa kutsara tinidor kutsilyo kaldero kawali kalan telebisyon radyo ilaw kuryente
+gripo sabon tuwalya damit pantalon palda sapatos tsinelas medyas sombrero payong bag pitaka susi
+salamin suklay walis basura basurahan bagay gamit kagamitan kasangkapan laruan regalo pasalubong
+bola manika saranggola trumpo lubid sinturon kuwintas singsing relo
+kahon lalagyan bote lata supot plastik palapag duyan kandila posporo bentilador orasan kalendaryo
+larawan litrato kamera selpon telepono kompyuter kompiyuter internet laptop
+
+# ---- school and work
+paaralan eskuwela eskuwelahan eskwela eskwelahan unibersidad kolehiyo klase silid-aralan aralin
+leksiyon leksyon takdang-aralin pagsusulit eksamen marka grado aklat libro kuwaderno papel lapis
+bolpen pambura pisara tisa aklatan silid-aklatan kaalaman karunungan edukasyon pag-aaral
+pananaliksik pagsasalin salin salita pangungusap talata wika balarila gramatika baybay pagbaybay
+titik letra numero tanong sagot halimbawa paksa kuwento kwento tula awit kanta sanaysay ulat balita
+pahayagan diyaryo dyaryo magasin liham sulat mensahe impormasyon datos resulta layunin proyekto
+gawain gawa trabaho hanapbuhay opisina tanggapan pulong miting programa sistema teknolohiya agham
+siyensiya siyensya matematika kasaysayan heograpiya sining musika palakasan isports laro prinsipal
+baitang pasukan bakasyon medisina kurso diploma pagtatapos seminar talumpati tagumpay
+
+# ---- food
+pagkain kanin bigas tinapay ulam isda karne manok baboy baka itlog gulay prutas saging mangga
+mansanas ubas pakwan papaya pinya niyog buko kamatis sibuyas bawang luya asin asukal paminta toyo
+suka mantika gatas kape tsaa tubig sabaw sopas adobo sinigang tinola litson lechon pansit pancit
+lumpia puto kakanin kendi tsokolate sorbetes almusal tanghalian hapunan meryenda handaan pista
+piyesta palay mais kamote gabi talong ampalaya kalabasa sitaw okra pipino repolyo patatas keso
+hipon alimango pusit tahong lugaw
+
+# ---- nature and animals
+kalikasan mundo daigdig lupa langit araw buwan bituin ulap ulan hangin bagyo baha lindol kidlat
+kulog dagat ilog lawa bundok burol bulkan gubat kagubatan puno halaman bulaklak dahon sanga ugat
+damo bato buhangin apoy usok yelo init lamig panahon klima hayop aso pusa ibon kabayo kalabaw
+kambing unggoy ahas daga langgam lamok langaw paruparo paru-paro insekto kalapati agila pating
+balyena kapaligiran polusyon himpapawid tanawin likas yaman tabing-dagat dalampasigan baybayin
+isla pulo kapuluan ilalim talon bukal batis
+
+# ---- time
+oras minuto segundo linggo taon dekada siglo umaga tanghali hapon gabi hatinggabi madaling-araw
+kahapon bukas kagabi kinabukasan dati lagi palagi minsan madalas bihira sandali saglit petsa
+lunes martes miyerkoles huwebes biyernes sabado
+enero pebrero marso abril mayo hunyo hulyo agosto setyembre oktubre nobyembre disyembre
+pasko kaarawan anibersaryo araw-araw gabi-gabi taon-taon taun-taon linggu-linggo buwan-buwan
+
+# ---- places and directions
+lugar pook bayan lungsod siyudad lalawigan probinsiya probinsya nayon baryo barangay bansa
+pilipinas maynila kalye daan kalsada tulay palengke pamilihan tindahan simbahan botika bangko
+restawran kainan munisipyo istasyon paliparan pantalan daungan parke plasa sinehan hotel bukid
+sakahan hilaga timog silangan kanluran kaliwa kanan harap harapan likuran loob labas itaas ibaba
+gitna tabi gilid ibabaw pagitan hangganan papunta paroon pauwi gusali kampo mundo kalawakan
+
+# ---- transport
+sasakyan kotse bus dyip dyipni traysikel tren eroplano barko bangka bisikleta motor taksi pedikab
+
+# ---- society and abstract nouns
+buhay kamatayan pag-ibig pagmamahal pagkakaibigan kalayaan kapayapaan katarungan katotohanan
+kasinungalingan karapatan tungkulin pananagutan responsibilidad desisyon pasya problema suliranin
+solusyon dahilan epekto bunga sanhi paraan pamamaraan proseso hakbang plano pangarap pag-asa
+tiwala pananampalataya diyos dios kaluluwa isipan damdamin pakiramdam emosyon kaligayahan
+kalungkutan hiya inggit tagumpay kabiguan pagkakataon kapalaran suwerte swerte malas kayamanan
+kahirapan pera salapi piso sentimo presyo halaga bayad suweldo sweldo sahod buwis negosyo kalakal
+produkto serbisyo kompanya kumpanya pamahalaan gobyerno batas eleksiyon halalan boto pulitika
+politika ekonomiya lipunan kultura tradisyon kaugalian relihiyon pamana panitikan pelikula palabas
+alamat pabula mito bugtong salawikain kasabihan karanasan kakayahan kasanayan talento ugali
+katangian pagkatao kabutihan kasamaan kabaitan kasipagan katapatan katapangan paggalang respeto
+pasensiya pasensya tiyaga disiplina kaayusan kalinisan kaligtasan panganib aksidente krimen
+kapulisan pag-unlad kaunlaran kinabukasan nakaraan kasalukuyan simula wakas dulo katapusan
+pagbabago pagkakaiba pagkakapareho pagkakaisa pagtutulungan bayanihan bagong-taon
+
+# ---- adjectives and adverbs without ma-
+pangit luma bago tamad payat pula puti itim asul bughaw berde luntian dilaw kahel lila rosas
+kayumanggi abo kulay-abo tahimik mahal mura sariwa bulok hilaw hinog basa tuyo bukas sarado
+totoo tama mali posible imposible importante espesyal normal karaniwan pangkaraniwan simple
+kailangan dapat gusto ayaw nais ibig puwede pwede maaari talaga siguro baka marahil tiyak sigurado
+agad kaagad bigla dahan-dahan unti-unti isa-isa paulit-ulit sari-sari iba-iba lalo higit mas
+pinaka sobra masyado medyo kulang sapat labis pareho kapareho katulad tulad gaya parang kagaya
+buo kabuuan kalahati bahagi parte iilan kakaunti kaunti konti marami lahat bawat iba ilan una
+huli sunod susunod darating dumarating daraan dumaraan ganap mahilig matulungin magalang masunurin
+mabuti mahalaga mayaman mahirap madali malakas malapit malayo matanda bata busog gutom antok
+uhaw pagod galit takot lungkot saya
+
+# ---- numbers
+isa dalawa tatlo apat lima anim pito walo siyam sampu labing-isa labindalawa dalawampu tatlumpu
+apatnapu limampu sandaan isandaan daan libo sanlibo milyon una ikalawa ikatlo ikaapat ikalima
+ikaanim ikapito ikawalo ikasiyam ikasampu pangalawa pangatlo pang-apat
+isang dalawang tatlong apat ikatlong ikalawang unang
+
+# ---- irregular and lexicalised verb forms (not produced by the paradigms)
+alam malaman nalaman nalalaman malalaman alamin inalam inaalam aalamin
+maramdaman naramdaman nararamdaman mararamdaman ramdam
+maintindihan naintindihan naiintindihan maiintindihan
+maunawaan naunawaan nauunawaan mauunawaan pag-unawa pagkaunawa
+pakinggan pinakinggan pinakikinggan pinapakinggan pakikinggan
+panoorin pinanood pinapanood pinanonood papanoorin panonood
+darating dumating dumarating daraan dumaan dumaraan
+mamatay namatay namamatay mamamatay patay pumatay pinatay patayin
+mamili namili namimili mamimili mamasyal namasyal namamasyal mamamasyal
+manahi nanahi mananahi mangisda nangisda nangingisda manghiram nanghiram nanghihiram
+kausap kausapin kinausap kinakausap kakausapin pakikipag-usap
+magpatuloy nagpatuloy nagpapatuloy magpapatuloy ipagpatuloy ipinagpatuloy pagpapatuloy
+ipakita ipinakita ipinapakita ipapakita magpakita nagpakita ipakilala ipinakilala magpakilala
+nagpakilala magkasakit nagkasakit nagkakasakit magkakasakit
+magkaroon nagkaroon nagkakaroon magkakaroon
+magkita nagkita nagkikita magkikita magkasama magkaiba magkapareho magkaugnay magkasundo
+magkaibigan magkalaban magkatabi magkaisa nagkaisa pagkakaugnay ugnay kaugnay
+paliguan pinaliguan pakainin pinakain pinapakain pakakainin
+ipaalam ipinaalam magpaalam nagpaalam pagpapaalam salamat magpasalamat nagpasalamat pasasalamat
+pumasa pasado bagsak bumagsak nagtapos magtapos nagtatapos magtatapos
+magsalita nagsalita nagsasalita magsasalita pagsasalita
+nakatira nakatayo nakaupo nakahiga natira natirang nawala nawawala mawala nakita nakikita
+pagtulog paggising pagkain pag-inom pagluluto paglalaro pagbabasa pagsusulat pagtuturo pagtatrabaho
+pumasok pumapasok papasok pasok
+sumakay sumasakay sasakay
+nanood nanonood manonood
+marinig narinig naririnig maririnig
+makinig nakinig nakikinig makikinig
+mahalin minahal minamahal mamahalin
+igalang iginagalang iginalang paggalang
+tanggapin tinanggap tinatanggap tatanggapin
+mabasa nabasa nababasa mababasa

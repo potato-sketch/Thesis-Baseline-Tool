@@ -1,0 +1,35 @@
+# Tagalog function words: markers, pronouns, demonstratives, particles,
+# conjunctions and their linker (-ng) forms.  They are part of the Tagalog
+# dictionary, but the stemmer never accepts one as the root of an affixed
+# word (so "parin" is not read as pa- + rin).
+
+# case markers
+ang ng nang sa si sina ni nina kay kina mga
+
+# pronouns
+ako ko akin aking akong ikaw ka mo iyo iyong siya niya kanya kaniya kanyang kaniyang siyang
+tayo natin atin ating tayong nating kami namin amin aming kaming kayo ninyo inyo inyong kayong
+sila nila kanila kanilang silang kita kong mong niyang nilang
+
+# demonstratives and locatives
+ito nito dito rito itong nitong iyan niyan diyan riyan iyang niyang iyon niyon doon roon iyong niyong
+ganito ganitong ganyan ganyang ganoon ganoong ganon gayon gayong nandito nandiyan nandoon narito naroon
+heto hayan hayun ayan ayun
+
+# question words
+ano anong sino sinong saan kailan bakit paano ilan ilang alin aling magkano nasaan gaano
+
+# linkers, existentials, negation
+na at ay o hindi huwag oo opo oho wala walang mayroon mayroong may nasa di
+
+# particles (enclitics)
+din rin daw raw man pa lang lamang naman nga po ho ba kaya pala sana yata tuloy muna nawa
+kasi eh ha ah oh hoy
+
+# conjunctions and prepositions
+pero ngunit subalit datapwat dahil sapagkat pagkat kung kapag kapagka habang samantala samantalang
+para upang kaysa saka tsaka gayunman gayunpaman bagaman bagamat kahit maging hanggang mula
+kundi pati tungkol ayon bukod maliban liban hinggil alinsunod patungkol
+
+# time adverbs used like particles
+noon noong kanina kaninang mamaya ngayon ngayong

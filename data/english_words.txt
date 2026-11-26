@@ -1,0 +1,65 @@
+# English word list used for code-switching (nag-text, magresearch, "call center").
+# Small seed list of common words; drop a full English list (e.g. one word per
+# line) into data/extra/english/ for real use, then run: python -m spellchecker train
+
+# function words
+a i an the and or but if so as at by for from in into of off on onto out over to up with without
+about above after against along among around before behind below beneath beside between beyond
+during except inside near outside since through toward under until upon within
+me my mine we us our ours you your yours he him his she her hers it its they them their theirs
+this that these those who whom whose which what when where why how all any both each every few
+many more most much no none not nor only other same some such than too very can could may might
+must shall should will would is am are was were be been being have has had having do does did done
+yes okay ok hello hi bye please thanks sorry
+
+# common nouns
+time year day week month hour minute second morning afternoon evening night today tomorrow
+yesterday weekend holiday birthday party people person man woman child children boy girl baby
+family friend friends mother father brother sister parent parents teacher student students class
+school college university office work job company business boss team member leader group meeting
+house home room kitchen bathroom door window table chair bed computer laptop phone cellphone
+mobile tablet internet website email message text chat post video photo picture camera music song
+movie show game sport ball car bus train plane ship bike road street city town country world place
+food water coffee tea milk bread rice chicken pork beef fish fruit egg cake pizza burger fries
+money price bill payment bank card cash budget store mall market shop restaurant hotel hospital
+doctor nurse police church park beach river mountain island sun moon star rain wind weather
+book books paper pen pencil notebook page letter word words sentence language story news report
+project projects research data information system program software hardware app application file
+files folder document documents keyboard mouse screen printer print network server account
+password user login online offline download upload update install link page site search
+question answer problem solution idea plan goal result test exam quiz grade grades score subject
+lesson topic homework assignment deadline schedule event trip vacation travel ticket line
+center centre call service customer client product order delivery item size color type style
+brand model design art science history math english health body heart head hand face eye
+power energy light fire life love hope dream fun break lunch dinner breakfast snack
+traffic jeepney
+
+# common verbs
+be have do say said go went gone get got make made know knew think thought take took see saw
+come came want look use find give gave tell told work call try ask need feel become leave put
+mean keep let begin seem help talk turn start show hear play run move like live believe hold
+bring happen write provide sit stand lose pay meet include continue set learn change lead
+understand watch follow stop create speak read allow add spend grow open walk win offer remember
+consider appear buy wait serve die send expect build stay fall cut reach kill remain suggest
+raise pass sell require report decide pull text texted texting texts chat chatted chatting
+post posted posting share shared sharing like liked likes comment comments follow followed
+download downloaded upload uploaded print printed printing check checked checking save saved
+edit edited delete deleted search searched submit submitted research researched researching
+review reviewed study studied studying practice practiced drive drove ride rode shop shopping
+cook cooked clean cleaned dance danced sing sang swim swam sleep slept eat ate drink drank
+wash washed paint painted draw drew teach taught join joined plan planned enjoy enjoyed miss
+missed love loved hate hated relax rest attend attended present presented explain explained
+compute computed process processed encode encoded type typed scan scanned charge charged
+order ordered deliver delivered book booked cancel cancelled confirm confirmed
+
+# common adjectives and adverbs
+good bad new old young big small large little long short high low great best better worse
+worst first last next early late easy hard fast slow hot cold warm cool happy sad angry tired
+busy free full empty right wrong true false real sure important possible different same nice
+beautiful pretty cute ugly clean dirty cheap expensive rich poor strong weak smart simple
+online offline open closed ready late again always never often sometimes usually already still
+just also even really actually maybe very quite super
+
+# technical terms often borrowed in Filipino texts
+tannins plesiomorphic photosynthesis molecule cell cells species habitat ecosystem
+algorithm database
